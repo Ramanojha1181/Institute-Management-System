@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Parent Secure Login</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:'Poppins',sans-serif;
+    }
+
+    body{
+      min-height:100vh;
+      background:#020b2b;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow-y:auto;
+      color:#fff;
+      padding:20px;
+    }
+
+    .container{
+      width:75%;
+      max-width:1300px;
+      min-height:700px;
+      display:flex;
+      border-radius:30px;
+      overflow:hidden;
+      background:rgba(255,255,255,0.03);
+      border:1px solid rgba(255,255,255,0.08);
+      box-shadow:0 0 40px rgba(0,153,255,0.25);
+    }
+
+    /* LEFT SIDE */
+
+    .left{
+      width:50%;
+      padding:50px;
+      position:relative;
+
+      background:
+      linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.55)),
+      url('https://images.openai.com/static-rsc-4/BREJ8UhdVWUnuiUpFqxdsYJ8rFExxhTfhb8kij4_puvvEDVUIKdOFhoDL5C1ihNPmp2QJ-mxV0kF9qJLj1W7F4fNwU_xwMRdABt02iZrN7EI1O7p6M76oWgbJ0zGViCAvIip3omWKacwW5ImwnFucdNzz8K9i2hrmlw39u0LXD-NvsahTlwpqEfLn-JQfYAX?purpose=fullsize');
+
+      background-size:cover;
+      background-position:center;
+    }
+
+    .logo{
+      font-size:34px;
+      font-weight:700;
+      color:#fff;
+    }
+
+    .logo span{
+      color:#3da5ff;
+    }
+
+    .title{
+      margin-top:80px;
+      font-size:52px;
+      line-height:1.1;
+      font-weight:700;
+    }
+
+    .desc{
+      margin-top:20px;
+      max-width:500px;
+      color:#c8d2ff;
+      font-size:18px;
+      line-height:1.7;
+    }
+
+    .cards{
+      position:absolute;
+      bottom:40px;
+      left:40px;
+      right:40px;
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:15px;
+    }
+
+    .card{
+      background:rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.1);
+      padding:12px;
+      border-radius:18px;
+      text-align:center;
+      backdrop-filter:blur(10px);
+      transition:.3s;
+    }
+
+    .card:hover{
+      transform:translateY(-5px);
+      box-shadow:0 0 20px rgba(0,162,255,0.4);
+    }
+
+    .icon{
+      width:50px;
+      height:50px;
+      border-radius:50%;
+      margin:auto;
+      margin-bottom:12px;
+      background:linear-gradient(135deg,#00c6ff,#0072ff);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:20px;
+    }
+
+    .card h4{
+      font-size:14px;
+      margin-bottom:5px;
+    }
+
+    .card p{
+      font-size:11px;
+      color:#bcc8ff;
+    }
+
+    /* RIGHT SIDE */
+
+    .right{
+      width:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:30px;
+    }
+
+    .login-box{
+      width:100%;
+      max-width:520px;
+      padding:45px;
+      border-radius:30px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.1);
+      box-shadow:0 0 30px rgba(0,119,255,0.25);
+      backdrop-filter:blur(15px);
+    }
+
+    .shield{
+      width:90px;
+      height:90px;
+      border-radius:50%;
+      margin:auto;
+      margin-bottom:25px;
+      background:linear-gradient(135deg,#00c6ff,#6f00ff);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:36px;
+      box-shadow:0 0 30px rgba(0,153,255,0.6);
+    }
+
+    .login-box h1{
+      text-align:center;
+      font-size:42px;
+      margin-bottom:10px;
+    }
+
+    .sub{
+      text-align:center;
+      color:#bfc8ff;
+      margin-bottom:35px;
+    }
+
+    .input-box{
+      position:relative;
+      margin-bottom:30px;
+    }
+
+    .input-box input{
+      width:100%;
+      padding:18px 20px;
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.15);
+      outline:none;
+      border-radius:14px;
+      color:#fff;
+      font-size:16px;
+    }
+
+    .input-box label{
+      position:absolute;
+      left:18px;
+      top:-11px;
+      background:#08143d;
+      padding:0 8px;
+      font-size:13px;
+      color:#7ab9ff;
+    }
+
+    .btn{
+      width:100%;
+      padding:18px;
+      border:none;
+      border-radius:14px;
+      font-size:18px;
+      font-weight:600;
+      cursor:pointer;
+      color:#fff;
+      background:linear-gradient(90deg,#009dff,#7a00ff);
+      transition:.3s;
+      box-shadow:0 0 20px rgba(0,140,255,.4);
+    }
+
+    .btn:hover{
+      transform:scale(1.02);
+      box-shadow:0 0 30px rgba(0,140,255,.7);
+    }
+
+    .secure{
+      text-align:center;
+      margin-top:20px;
+      color:#8fa2ff;
+      font-size:13px;
+    }
+
+    @media(max-width:1000px){
+
+      .container{
+        flex-direction:column;
+      }
+
+      .left,
+      .right{
+        width:100%;
+      }
+
+      .cards{
+        position:relative;
+        left:0;
+        right:0;
+        bottom:0;
+        margin-top:40px;
+      }
+
+    }
+
+    @media(max-width:700px){
+
+      .cards{
+        grid-template-columns:repeat(2,1fr);
+      }
+
+      .title{
+        font-size:38px;
+      }
+
+      .login-box h1{
+        font-size:32px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- LEFT SIDE -->
+
+    <div class="left">
+
+      <div class="logo">
+        Edu<span>Parent</span>
+      </div>
+
+      <div class="title">
+        Parent Secure Portal
+      </div>
+
+      <div class="desc">
+        Monitor your child's academic performance, attendance, notices, and school activities securely.
+      </div>
+
+      <div class="cards">
+
+        <div class="card">
+          <div class="icon">📘</div>
+          <h4>Student Reports</h4>
+          <p>View Academic Progress</p>
+        </div>
+
+        <div class="card">
+          <div class="icon">📅</div>
+          <h4>Attendance</h4>
+          <p>Daily Attendance Status</p>
+        </div>
+
+        <div class="card">
+          <div class="icon">💬</div>
+          <h4>Teacher Connect</h4>
+          <p>Direct Communication</p>
+        </div>
+
+        <div class="card">
+          <div class="icon">🔔</div>
+          <h4>School Notices</h4>
+          <p>Latest Announcements</p>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- RIGHT SIDE -->
+
+    <div class="right">
+
+      <div class="login-box">
+
+        <div class="shield">👨‍👩‍👦</div>
+
+        <h1>Parent Login</h1>
+
+        <p class="sub">
+          Welcome! Please login to continue
+        </p>
+
+        <div class="input-box">
+          <label>Parent ID</label>
+          <input type="text" placeholder="Enter Parent ID" required>
+        </div>
+
+        <div class="input-box">
+          <label>Password</label>
+          <input type="password" placeholder="Enter Password" required>
+        </div>
+
+        <button class="btn" onclick="window.location.href='parent-dashboard.html'">
+          Sign In
+        </button>
+
+        <div class="secure">
+          🔒 Secure Parent Authentication Enabled
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</body>
+</html>
