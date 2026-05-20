@@ -20,8 +20,8 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      overflow:hidden;
       color:#fff;
+      /* overflow:hidden; */
     }
 
     .container{
@@ -98,7 +98,7 @@
       padding:18px;
       border-radius:18px;
       text-align:center;
-      backdrop-filter:blur(10px);
+      backdrop-filter:blur(10px); 
       transition:.3s;
     }
 
@@ -184,7 +184,7 @@
 
     .input-box{
       position:relative;
-      margin-bottom:22px;
+      margin-bottom:30px;
     }
 
     .input-box input{
@@ -265,9 +265,10 @@
     }
 
     @media(max-width:1000px){
+      
       .container{
         flex-direction:column;
-        height:auto;
+        height:100%;
       }
 
       .left,.right{
@@ -284,6 +285,7 @@
     }
 
     @media(max-width:700px){
+     
       .cards{
         grid-template-columns:repeat(2,1fr);
       }
@@ -311,10 +313,7 @@
       <div class="logo">
         Edu<span>Shield</span>
       </div>
-
-      <div class="tag">
-        SECURE. MANAGE. EXCEL.
-      </div>
+<br><br>
 
       <div class="title">
         Admin Secure Access
@@ -370,30 +369,19 @@
 
         <div class="input-box">
           <label>Email</label>
-          <input type="email" placeholder="Email OR Username">
+          <input type="email" placeholder="Email OR Username" required>
         </div>
 
         <div class="input-box">
           <label>Password</label>
-          <input type="password" id="password" placeholder="Password">
-        </div>
-
-        <div class="check">
-          
-          
-        </div>
-
-        
-
-        
-
+          <input type="password" id="password" placeholder="Password" required>
+        </div><br>
+        <a href="Teacher.html" style="text-decoration: none;" id="signinbtn">
         <button class="btn" onclick="login()" >
-         <a href=""> Sign In
-       </a> </button>
-
-        
-
-        
+           Sign In
+          </button>
+        </a>
+           
 
       </div>
 
@@ -426,7 +414,7 @@
   </script> -->
 
 <!-- Code injected by live-server -->
-<script>
+<!-- <script>
 	// <![CDATA[  <-- For SVG support
 	if ('WebSocket' in window) {
 		(function () {
@@ -462,6 +450,6 @@
 		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
 	}
 	// ]]>
-</script>
+</script> -->
 
 </body></html>
