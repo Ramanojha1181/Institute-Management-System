@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EduSmart Login</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    overflow-x:hidden;
+
+    background:
+    linear-gradient(rgba(94,140,255,0.30),rgba(255,255,255,0.15)),
+    url('https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=1400&auto=format&fit=crop');
+
+    background-size:cover;
+    background-position:center;
+}
+
+/* MAIN CONTAINER */
+
+.container{
+    width:100%;
+    max-width:1300px;
+    min-height:700px;
+
+    background:rgba(255,255,255,0.30);
+    backdrop-filter:blur(12px);
+
+    border-radius:24px;
+    overflow:hidden;
+
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+
+    border:1px solid rgba(255,255,255,0.5);
+
+    box-shadow:0 10px 35px rgba(0,0,0,0.12);
+}
+
+/* LEFT SIDE */
+
+.left{
+    position:relative;
+
+    padding:40px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+
+    background:
+    linear-gradient(rgba(255,255,255,0.82),rgba(255,255,255,0.82)),
+    url('https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=1200&auto=format&fit=crop');
+
+    background-size:cover;
+    background-position:center;
+}
+
+/* LOGO */
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.logo-box{
+    width:60px;
+    height:60px;
+
+    border-radius:16px;
+
+    background:linear-gradient(135deg,#2563eb,#9333ea);
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    color:white;
+    font-size:28px;
+}
+
+.logo-text h1{
+    font-size:clamp(28px,3vw,48px);
+    color:#1d2b64;
+    line-height:1;
+}
+
+.logo-text span{
+    font-size:clamp(14px,1.5vw,22px);
+    color:#374151;
+}
+
+/* HERO SECTION */
+
+.hero{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:30px;
+    flex-wrap:wrap;
+}
+
+.hero-text{
+    flex:1;
+    min-width:260px;
+}
+
+.hero-text h2{
+    font-size:clamp(42px,5vw,72px);
+    line-height:1.1;
+    color:#1d2b64;
+    font-weight:700;
+}
+
+.hero-text h2 span{
+    color:#6b21a8;
+}
+
+.line{
+    width:180px;
+    height:4px;
+    margin-top:20px;
+    border-radius:10px;
+
+    background:linear-gradient(to right,#9333ea,#d8b4fe);
+}
+
+/* IMAGE */
+
+.teacher-img{
+    flex:1;
+    min-width:240px;
+
+    display:flex;
+    justify-content:center;
+}
+
+.teacher-img img{
+    width:100%;
+    max-width:320px;
+
+    border-radius:24px;
+
+    object-fit:cover;
+
+    box-shadow:0 10px 25px rgba(0,0,0,0.15);
+}
+
+/* QUOTE */
+
+.quote{
+    margin-top:30px;
+
+    font-size:clamp(16px,1.5vw,26px);
+
+    color:#6b21a8;
+
+    font-style:italic;
+
+    line-height:1.5;
+}
+
+/* RIGHT PANEL */
+
+.right{
+    background:rgba(255,255,255,0.70);
+
+    padding:40px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.login-box{
+    width:100%;
+    max-width:420px;
+}
+
+/* LOCK ICON */
+
+.lock{
+    width:75px;
+    height:75px;
+
+    margin:auto auto 20px;
+
+    border-radius:50%;
+
+    background:linear-gradient(135deg,#7c3aed,#9333ea);
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    color:white;
+    font-size:32px;
+}
+
+/* LOGIN TEXT */
+
+.login-box h2{
+    text-align:center;
+    font-size:clamp(32px,3vw,52px);
+    color:#2d3748;
+}
+
+.login-box p{
+    text-align:center;
+    margin-top:10px;
+    margin-bottom:35px;
+
+    color:#4b5563;
+
+    font-size:clamp(16px,1.5vw,24px);
+}
+
+/* INPUTS */
+
+.input-group{
+    margin-bottom:20px;
+}
+
+.input-group input{
+    width:100%;
+
+    padding:18px;
+
+    border-radius:14px;
+
+    border:1.5px solid #d1d5db;
+
+    outline:none;
+
+    font-size:clamp(15px,1.2vw,20px);
+
+    transition:0.3s;
+}
+
+.input-group input:focus{
+    border-color:#7c3aed;
+
+    box-shadow:0 0 0 4px rgba(124,58,237,0.12);
+}
+
+/* OPTIONS */
+
+.options{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    gap:10px;
+
+    margin-bottom:25px;
+
+    flex-wrap:wrap;
+}
+
+.options label{
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+    font-size:clamp(14px,1.1vw,20px);
+
+    color:#374151;
+}
+
+.options input{
+    width:18px;
+    height:18px;
+}
+
+.options a{
+    text-decoration:none;
+
+    color:#4f46e5;
+
+    font-size:clamp(14px,1.1vw,20px);
+}
+
+/* BUTTON */
+
+.login-btn{
+    width:100%;
+
+    padding:18px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:linear-gradient(90deg,#2563eb,#8b5cf6);
+
+    color:white;
+
+    font-size:clamp(18px,1.8vw,30px);
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:0.3s;
+
+    box-shadow:0 8px 20px rgba(37,99,235,0.20);
+}
+
+.login-btn:hover{
+    transform:translateY(-2px);
+}
+
+/* SEPARATOR */
+
+.separator{
+    margin:30px 0;
+
+    display:flex;
+    align-items:center;
+    gap:15px;
+
+    color:#4b5563;
+
+    font-size:clamp(14px,1vw,18px);
+}
+
+.separator::before,
+.separator::after{
+    content:'';
+
+    flex:1;
+    height:2px;
+
+    background:#d8b4fe;
+}
+
+/* SOCIAL */
+
+.social{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.social button{
+    padding:15px;
+
+    border-radius:14px;
+
+    border:1px solid #d1d5db;
+
+    background:white;
+
+    font-size:clamp(15px,1vw,18px);
+
+    font-weight:500;
+
+    cursor:pointer;
+
+    transition:0.3s;
+}
+
+.social button:hover{
+    background:#f9fafb;
+}
+
+/* SECURITY */
+
+.security{
+    margin-top:30px;
+
+    padding-top:20px;
+
+    border-top:1px solid #d1d5db;
+
+    color:#374151;
+
+    font-size:clamp(14px,1vw,18px);
+
+    line-height:1.6;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1000px){
+
+    .container{
+        grid-template-columns:1fr;
+    }
+
+    .hero{
+        justify-content:center;
+        text-align:center;
+    }
+
+    .line{
+        margin:auto;
+        margin-top:20px;
+    }
+
+    .quote{
+        text-align:center;
+    }
+
+    .left,
+    .right{
+        padding:30px;
+    }
+}
+
+@media(max-width:600px){
+
+    body{
+        padding:10px;
+    }
+
+    .container{
+        border-radius:18px;
+    }
+
+    .left,
+    .right{
+        padding:22px;
+    }
+
+    .teacher-img img{
+        max-width:250px;
+    }
+
+    .social{
+        grid-template-columns:1fr;
+    }
+
+    .options{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .login-btn{
+        padding:16px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- LEFT SIDE -->
+
+    <div class="left">
+
+        <!-- LOGO -->
+
+        <div class="logo">
+
+            <div class="logo-box">
+                🎓
+            </div>
+
+            <div class="logo-text">
+                <h1>EduSmart</h1>
+                <span>International School</span>
+            </div>
+
+        </div>
+
+        <!-- HERO -->
+
+        <div class="hero">
+
+            <div class="hero-text">
+
+                <h2>
+                    Welcome Back,<br>
+                    <span>Teacher!</span>
+                </h2>
+
+                <div class="line"></div>
+
+            </div>
+
+            <div class="teacher-img">
+
+                <img
+                src="https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=1000&auto=format&fit=crop"
+                alt="Teacher">
+
+            </div>
+
+        </div>
+
+        <!-- QUOTE -->
+
+        <div class="quote">
+            "Teaching is the one profession that creates all other professions."
+        </div>
+
+    </div>
+
+    <!-- RIGHT SIDE -->
+
+    <div class="right">
+
+        <div class="login-box">
+
+            <div class="lock">
+                🔒
+            </div>
+
+            <h2>Teacher Login</h2>
+
+            <p>
+                Secure access to your faculty portal
+            </p>
+
+            <form id="loginForm">
+
+                <div class="input-group">
+                    <input
+                    type="email"
+                    id="email"
+                    placeholder="Email Address"
+                    required>
+                </div>
+
+                <div class="input-group">
+                    <input
+                    type="password"
+                    id="password"
+                    placeholder="Password"
+                    required>
+                </div>
+
+                <div class="options">
+
+                    <label>
+                        <input type="checkbox">
+                        Remember me
+                    </label>
+
+                    <a href="#">
+                        Forgot Password?
+                    </a>
+
+                </div>
+
+                <button type="submit" class="login-btn">
+                    Secure Login
+                </button>
+
+            </form>
+
+            <div class="separator">
+                or continue with
+            </div>
+
+            <div class="social">
+
+                <button>Google</button>
+
+                <button>Microsoft</button>
+
+            </div>
+
+            <div class="security">
+                🔒 Your data is protected with enterprise-grade security.
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+document.getElementById('loginForm').addEventListener('submit',function(e){
+
+    e.preventDefault();
+
+    const email=document.getElementById('email').value.trim();
+
+    const password=document.getElementById('password').value.trim();
+
+    if(email==='' || password===''){
+
+        alert('Please fill all fields');
+
+        return;
+    }
+
+    const emailPattern=/^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+
+    if(!email.match(emailPattern)){
+
+        alert('Enter valid email');
+
+        return;
+    }
+
+    alert('Login Successful');
+
+});
+
+</script>
+
+</body>
+</html>
+```
