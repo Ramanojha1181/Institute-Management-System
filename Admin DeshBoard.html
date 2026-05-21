@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+
+  <!-- FONT AWESOME -->
+  <link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial, Helvetica, sans-serif;
+    }
+
+    body{
+      background:#071225;
+      color:white;
+    }
+
+    .dashboard{
+      display:flex;
+      min-height:100vh;
+    }
+
+    /* ================= SIDEBAR ================= */
+
+    .sidebar{
+      width:260px;
+      background:#081426;
+      border-right:1px solid rgba(255,255,255,0.08);
+      padding:20px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+
+    .logo{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-bottom:30px;
+    }
+
+    .logo img{
+      width:45px;
+      height:45px;
+    }
+
+    .logo h2{
+      font-size:24px;
+    }
+
+    .logo p{
+      font-size:13px;
+      color:#94a3b8;
+    }
+
+    .menu{
+      list-style:none;
+    }
+
+    .menu li{
+      margin:8px 0;
+    }
+
+    .menu a{
+      text-decoration:none;
+      color:#cbd5e1;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:14px;
+      border-radius:12px;
+      transition:0.3s;
+    }
+
+    .menu a:hover,
+    .menu .active{
+      background:#2563eb;
+      color:white;
+    }
+
+    .menu-left{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .quick-actions{
+      margin-top:30px;
+    }
+
+    .quick-actions h4{
+      color:#94a3b8;
+      margin-bottom:15px;
+      font-size:14px;
+    }
+
+    .action-btn{
+      background:#0f1f38;
+      padding:14px;
+      border-radius:12px;
+      margin-bottom:12px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      cursor:pointer;
+    }
+
+    .action-btn i{
+      width:35px;
+      height:35px;
+      border-radius:50%;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      color:white;
+    }
+
+    .blue{background:#2563eb;}
+    .green{background:#22c55e;}
+    .orange{background:#f97316;}
+    .purple{background:#8b5cf6;}
+
+    .session-box{
+      background:#0f1f38;
+      padding:15px;
+      border-radius:12px;
+      margin-top:20px;
+    }
+
+    .session-box p{
+      color:#94a3b8;
+      font-size:13px;
+      margin-bottom:5px;
+    }
+
+    .admin-box{
+      background:#0f1f38;
+      padding:14px;
+      border-radius:12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-top:20px;
+    }
+
+    .admin-info{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .admin-info img{
+      width:42px;
+      height:42px;
+      border-radius:50%;
+    }
+
+    /* ================= MAIN ================= */
+
+    .main{
+      flex:1;
+      padding:20px;
+    }
+
+    /* TOPBAR */
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:25px;
+    }
+
+    .search-box{
+      width:460px;
+      background:#0f1f38;
+      border:1px solid rgba(255,255,255,0.08);
+      padding:12px 18px;
+      border-radius:12px;
+    }
+
+    .search-box input{
+      width:90%;
+      background:transparent;
+      border:none;
+      outline:none;
+      color:white;
+      margin-left:10px;
+    }
+
+    .top-icons{
+      display:flex;
+      align-items:center;
+      gap:20px;
+    }
+
+    .top-icons i{
+      color:#cbd5e1;
+      cursor:pointer;
+    }
+
+    .top-admin{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      background:#0f1f38;
+      padding:8px 14px;
+      border-radius:12px;
+    }
+
+    .top-admin img{
+      width:40px;
+      height:40px;
+      border-radius:50%;
+    }
+
+    /* WELCOME */
+
+    .welcome{
+      margin-bottom:25px;
+    }
+
+    .welcome h1{
+      font-size:32px;
+      margin-bottom:8px;
+    }
+
+    .welcome p{
+      color:#94a3b8;
+    }
+
+    /* GRID */
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:20px;
+    }
+
+    .card{
+      background:#0b1730;
+      border:1px solid rgba(255,255,255,0.05);
+      border-radius:20px;
+      padding:20px;
+    }
+
+    /* STATS CARD */
+
+    .stats-card{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
+
+    .stats-icon{
+      width:55px;
+      height:55px;
+      border-radius:15px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      font-size:24px;
+    }
+
+    .stats-card h2{
+      margin:10px 0;
+      font-size:32px;
+    }
+
+    .green-text{
+      color:#22c55e;
+    }
+
+    /* LARGE CARDS */
+
+    .large-card{
+      grid-column:span 2;
+    }
+
+    .chart{
+      height:260px;
+      margin-top:20px;
+      border-radius:15px;
+      background:linear-gradient(180deg,#0f1f38,#071225);
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      color:#2563eb;
+      font-size:24px;
+      border:1px solid rgba(255,255,255,0.05);
+    }
+
+    /* QUICK MODULES */
+
+    .module-grid{
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      gap:15px;
+      margin-top:20px;
+    }
+
+    .module{
+      background:#0f1f38;
+      padding:15px;
+      border-radius:15px;
+      text-align:center;
+      cursor:pointer;
+      transition:0.3s;
+    }
+
+    .module:hover{
+      transform:translateY(-4px);
+    }
+
+    .module i{
+      font-size:22px;
+      margin-bottom:10px;
+      color:#2563eb;
+    }
+
+    .module p{
+      font-size:14px;
+      color:#94a3b8;
+      margin-top:6px;
+    }
+
+    /* TABLE */
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:15px;
+    }
+
+    table th,
+    table td{
+      padding:12px;
+      text-align:left;
+      font-size:14px;
+    }
+
+    table th{
+      color:#94a3b8;
+      border-bottom:1px solid rgba(255,255,255,0.05);
+    }
+
+    table tr{
+      border-bottom:1px solid rgba(255,255,255,0.05);
+    }
+
+    .status{
+      padding:5px 10px;
+      border-radius:10px;
+      font-size:12px;
+    }
+
+    .confirmed{
+      background:#14532d;
+      color:#22c55e;
+    }
+
+    .pending{
+      background:#451a03;
+      color:#f59e0b;
+    }
+
+    /* RIGHT PANEL */
+
+    .right-panel{
+      width:320px;
+      background:#081426;
+      border-left:1px solid rgba(255,255,255,0.05);
+      padding:20px;
+    }
+
+    .calendar{
+      background:#0b1730;
+      border-radius:20px;
+      padding:20px;
+      margin-bottom:20px;
+    }
+
+    .calendar h3{
+      margin-bottom:20px;
+    }
+
+    .calendar-grid{
+      display:grid;
+      grid-template-columns:repeat(7,1fr);
+      gap:10px;
+      text-align:center;
+    }
+
+    .calendar-grid div{
+      padding:8px;
+      border-radius:10px;
+      color:#cbd5e1;
+    }
+
+    .active-date{
+      background:#2563eb;
+      color:white;
+    }
+
+    /* TIMELINE */
+
+    .timeline{
+      background:#0b1730;
+      border-radius:20px;
+      padding:20px;
+      margin-bottom:20px;
+    }
+
+    .timeline-item{
+      display:flex;
+      gap:12px;
+      margin:20px 0;
+    }
+
+    .timeline-dot{
+      width:12px;
+      height:12px;
+      border-radius:50%;
+      margin-top:5px;
+    }
+
+    .dot-yellow{background:#facc15;}
+    .dot-green{background:#22c55e;}
+    .dot-purple{background:#8b5cf6;}
+    .dot-orange{background:#f97316;}
+
+    .timeline-item p{
+      color:#94a3b8;
+      font-size:14px;
+      margin-top:5px;
+    }
+
+    /* NOTIFICATION */
+
+    .notification{
+      background:#0b1730;
+      border-radius:20px;
+      padding:20px;
+    }
+
+    .notification-item{
+      margin:20px 0;
+    }
+
+    .notification-item p{
+      color:#94a3b8;
+      font-size:14px;
+      margin-top:5px;
+    }
+
+    /* RESPONSIVE */
+
+    @media(max-width:1200px){
+
+      .dashboard{
+        flex-direction:column;
+      }
+
+      .right-panel{
+        width:100%;
+      }
+
+      .grid{
+        grid-template-columns:repeat(2,1fr);
+      }
+
+      .module-grid{
+        grid-template-columns:repeat(3,1fr);
+      }
+
+    }
+
+    @media(max-width:768px){
+
+      .grid{
+        grid-template-columns:1fr;
+      }
+
+      .module-grid{
+        grid-template-columns:repeat(2,1fr);
+      }
+
+      .topbar{
+        flex-direction:column;
+        gap:15px;
+      }
+
+      .search-box{
+        width:100%;
+      }
+
+    }
+
+  </style>
+</head>
+
+<body>
+
+<div class="dashboard">
+
+  <!-- ================= SIDEBAR ================= -->
+
+  <div class="sidebar">
+
+    <div>
+
+      <div class="logo">
+
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="logo pic">
+
+        <div>
+          <h2>EduSmart ERP</h2>
+          <p>School Management System</p>
+        </div>
+
+      </div>
+
+      <ul class="menu">
+
+        <li>
+          <a href="#" class="active">
+            <div class="menu-left">
+              <i class="fa-solid fa-house"></i>
+              Dashboard
+            </div>
+            <i class="fa-solid fa-angle-right"></i>
+          </a>
+        </li>
+
+        <li>
+          <a href="#">
+            <div class="menu-left">
+              <i class="fa-solid fa-user-graduate"></i>
+              Students
+            </div>
+            <i class="fa-solid fa-angle-right"></i>
+          </a>
+        </li>
+
+        <li>
+          <a href="#">
+            <div class="menu-left">
+              <i class="fa-solid fa-chalkboard-user"></i>
+              Teachers
+            </div>
+            <i class="fa-solid fa-angle-right"></i>
+          </a>
+        </li>
+
+        <li>
+          <a href="#">
+            <div class="menu-left">
+              <i class="fa-solid fa-users"></i>
+              Parents
+            </div>
+            <i class="fa-solid fa-angle-right"></i>
+          </a>
+        </li>
+
+        <li>
+          <a href="#">
+            <div class="menu-left">
+              <i class="fa-solid fa-wallet"></i>
+              Finance
+            </div>
+            <i class="fa-solid fa-angle-right"></i>
+          </a>
+        </li>
+
+        <li>
+          <a href="#">
+            <div class="menu-left">
+              <i class="fa-solid fa-file-lines"></i>
+              Exams
+            </div>
+            <i class="fa-solid fa-angle-right"></i>
+          </a>
+        </li>
+
+        <li>
+          <a href="#">
+            <div class="menu-left">
+              <i class="fa-solid fa-clock"></i>
+              Attendance
+            </div>
+            <i class="fa-solid fa-angle-right"></i>
+          </a>
+        </li>
+
+        <li>
+          <a href="#">
+            <div class="menu-left">
+              <i class="fa-solid fa-user-tie"></i>
+              HR Management
+            </div>
+            <i class="fa-solid fa-angle-right"></i>
+          </a>
+        </li>
+
+        <li>
+          <a href="#">
+            <div class="menu-left">
+              <i class="fa-solid fa-chart-line"></i>
+              Reports
+            </div>
+            <i class="fa-solid fa-angle-right"></i>
+          </a>
+        </li>
+
+        <li>
+          <a href="#">
+            <div class="menu-left">
+              <i class="fa-solid fa-gear"></i>
+              Settings
+            </div>
+            <i class="fa-solid fa-angle-right"></i>
+          </a>
+        </li>
+
+      </ul>
+
+      <!-- QUICK ACTIONS -->
+
+      <div class="quick-actions">
+
+        <h4>QUICK ACTIONS</h4>
+
+        <div class="action-btn">
+          <i class="fa-solid fa-user-plus blue"></i>
+          Add Student
+        </div>
+
+        <div class="action-btn">
+          <i class="fa-solid fa-user green"></i>
+          Add Teacher
+        </div>
+
+        <div class="action-btn">
+          <i class="fa-solid fa-bell orange"></i>
+          Create Notice
+        </div>
+
+        <div class="action-btn">
+          <i class="fa-solid fa-wallet purple"></i>
+          Collect Fees
+        </div>
+
+      </div>
+
+    </div>
+
+    <div>
+
+      <div class="session-box">
+        <p>Current Session</p>
+        <h3>2024 - 2025</h3>
+      </div>
+
+      <div class="admin-box">
+
+        <div class="admin-info">
+
+          <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="profile pic">
+
+          <div>
+            <h4> Admin</h4>
+            <p style="color:#94a3b8;font-size:13px;">Administrator</p>
+          </div>
+
+        </div>
+
+        <i class="fa-solid fa-angle-down"></i>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ================= MAIN ================= -->
+
+  <div class="main">
+
+    <!-- TOPBAR -->
+
+    <div class="topbar">
+
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text"
+        placeholder="Search for students, teachers, reports...">
+      </div>
+
+      <div class="top-icons">
+
+        <i class="fa-regular fa-moon"></i>
+        <i class="fa-regular fa-bell"></i>
+        <i class="fa-regular fa-message"></i>
+
+        <div class="top-admin">
+
+          <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="profile pic">
+
+          <div>
+            <h4> Admin</h4>
+            <p style="font-size:13px;color:#94a3b8;">Administrator</p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- WELCOME -->
+
+    <div class="welcome">
+
+      <h1>Welcome back, Admin!</h1>
+
+      <p>
+        Here's what's happening in your school today.
+      </p>
+
+    </div>
+
+    <!-- GRID -->
+
+    <div class="grid">
+
+      <!-- CARD 1 -->
+
+      <div class="card stats-card">
+
+        <div>
+
+          <p>Total Students</p>
+
+          <h2>2,543</h2>
+
+          <p class="green-text">
+            +12.5%
+          </p>
+
+        </div>
+
+        <div class="stats-icon"
+        style="background:#1e3a8a;">
+          <i class="fa-solid fa-user-graduate"></i>
+        </div>
+
+      </div>
+
+      <!-- CARD 2 -->
+
+      <div class="card stats-card">
+
+        <div>
+
+          <p>Total Teachers</p>
+
+          <h2>320</h2>
+
+          <p class="green-text">
+            +8.2%
+          </p>
+
+        </div>
+
+        <div class="stats-icon"
+        style="background:#14532d;">
+          <i class="fa-solid fa-chalkboard-user"></i>
+        </div>
+
+      </div>
+
+      <!-- CARD 3 -->
+
+      <div class="card stats-card">
+
+        <div>
+
+          <p>Attendance Today</p>
+
+          <h2>85.6%</h2>
+
+          <p class="green-text">
+            +5.3%
+          </p>
+
+        </div>
+
+        <div class="stats-icon"
+        style="background:#4c1d95;">
+          <i class="fa-solid fa-users"></i>
+        </div>
+
+      </div>
+
+      <!-- CARD 4 -->
+
+      <div class="card stats-card">
+
+        <div>
+
+          <p>Fee Collection</p>
+
+          <h2>₹ 12,45,300</h2>
+
+          <p class="green-text">
+            +10.2%
+          </p>
+
+        </div>
+
+        <div class="stats-icon"
+        style="background:#7c2d12;">
+          <i class="fa-solid fa-wallet"></i>
+        </div>
+
+      </div>
+
+      <!-- REVENUE -->
+
+      <div class="card large-card">
+
+        <div style="display:flex;justify-content:space-between;">
+
+          <h3>Revenue Overview</h3>
+
+          <p>This Year</p>
+
+        </div>
+
+        <div class="chart">
+          Revenue Chart
+        </div>
+
+      </div>
+
+      <!-- COLLECTION -->
+
+      <div class="card large-card">
+
+        <div style="display:flex;justify-content:space-between;">
+
+          <h3>Fee Collection Status</h3>
+
+          <p>This Month</p>
+
+        </div>
+
+        <div class="chart">
+          Collection Chart
+        </div>
+
+      </div>
+
+      <!-- QUICK MODULES -->
+
+      <div class="card"
+      style="grid-column:span 4;">
+
+        <h3>Quick Access Modules</h3>
+
+        <div class="module-grid">
+
+          <div class="module">
+            <i class="fa-solid fa-user-plus"></i>
+            <h4>Admission</h4>
+            <p>Manage admissions</p>
+          </div>
+
+          <div class="module">
+            <i class="fa-solid fa-calendar"></i>
+            <h4>Timetable</h4>
+            <p>Manage schedules</p>
+          </div>
+
+          <div class="module">
+            <i class="fa-solid fa-users"></i>
+            <h4>Staff</h4>
+            <p>Manage staff</p>
+          </div>
+
+          <div class="module">
+            <i class="fa-solid fa-file-lines"></i>
+            <h4>Exams</h4>
+            <p>Manage exams</p>
+          </div>
+
+          <div class="module">
+            <i class="fa-solid fa-video"></i>
+            <h4>Online Classes</h4>
+            <p>Virtual classrooms</p>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- TABLE -->
+
+      <div class="card large-card">
+
+        <div style="display:flex;justify-content:space-between;">
+          <h3>Recent Admissions</h3>
+          <p style="color:#2563eb;">View All</p>
+        </div>
+
+        <table>
+
+          <tr>
+            <th>Student</th>
+            <th>Class</th>
+            <th>Date</th>
+            <th>Status</th>
+          </tr>
+
+          <tr>
+            <td>Emma Johnson</td>
+            <td>Class 5A</td>
+            <td>May 26</td>
+            <td>
+              <span class="status confirmed">
+                Confirmed
+              </span>
+            </td>
+          </tr>
+
+          <tr>
+            <td>Liam Brown</td>
+            <td>Class 8B</td>
+            <td>May 25</td>
+            <td>
+              <span class="status confirmed">
+                Confirmed
+              </span>
+            </td>
+          </tr>
+
+          <tr>
+            <td>Olivia Davis</td>
+            <td>Class 3C</td>
+            <td>May 24</td>
+            <td>
+              <span class="status pending">
+                Pending
+              </span>
+            </td>
+          </tr>
+
+        </table>
+
+      </div>
+
+      <!-- DUE TABLE -->
+
+      <div class="card large-card">
+
+        <div style="display:flex;justify-content:space-between;">
+          <h3>Fee Collection Due</h3>
+          <p style="color:#2563eb;">View All</p>
+        </div>
+
+        <table>
+
+          <tr>
+            <th>Student</th>
+            <th>Class</th>
+            <th>Amount</th>
+            <th>Due Date</th>
+          </tr>
+
+          <tr>
+            <td>Emma Johnson</td>
+            <td>Class 5A</td>
+            <td>₹ 15,000</td>
+            <td style="color:#ef4444;">May 30</td>
+          </tr>
+
+          <tr>
+            <td>Liam Brown</td>
+            <td>Class 8B</td>
+            <td>₹ 12,500</td>
+            <td style="color:#ef4444;">May 28</td>
+          </tr>
+
+          <tr>
+            <td>Olivia Davis</td>
+            <td>Class 3C</td>
+            <td>₹ 10,000</td>
+            <td style="color:#ef4444;">May 27</td>
+          </tr>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ================= RIGHT PANEL ================= -->
+
+  <div class="right-panel">
+
+    <!-- CALENDAR -->
+
+    <div class="calendar">
+
+      <h3>Calendar</h3>
+
+      <div class="calendar-grid">
+
+        <div>Su</div>
+        <div>Mo</div>
+        <div>Tu</div>
+        <div>We</div>
+        <div>Th</div>
+        <div>Fr</div>
+        <div>Sa</div>
+
+        <div>1</div>
+        <div>2</div>
+        <div>3</div>
+        <div>4</div>
+        <div>5</div>
+        <div>6</div>
+        <div>7</div>
+
+        <div>8</div>
+        <div>9</div>
+        <div>10</div>
+        <div>11</div>
+        <div>12</div>
+        <div class="active-date">26</div>
+        <div>27</div>
+
+      </div>
+
+    </div>
+
+    <!-- TIMELINE -->
+
+    <div class="timeline">
+
+      <div style="display:flex;justify-content:space-between;">
+        <h3>Activity Timeline</h3>
+        <p style="color:#2563eb;">View All</p>
+      </div>
+
+      <div class="timeline-item">
+
+        <div class="timeline-dot dot-yellow"></div>
+
+        <div>
+          <h4>New student admission</h4>
+          <p>John Doe admitted in Class 5A</p>
+        </div>
+
+      </div>
+
+      <div class="timeline-item">
+
+        <div class="timeline-dot dot-green"></div>
+
+        <div>
+          <h4>Fee payment received</h4>
+          <p>Payment received from Michael</p>
+        </div>
+
+      </div>
+
+      <div class="timeline-item">
+
+        <div class="timeline-dot dot-purple"></div>
+
+        <div>
+          <h4>Teacher assigned</h4>
+          <p>Sarah assigned to Class 8B</p>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- NOTIFICATIONS -->
+
+    <div class="notification">
+
+      <div style="display:flex;justify-content:space-between;">
+        <h3>Notifications</h3>
+        <p style="color:#2563eb;">Mark All Read</p>
+      </div>
+
+      <div class="notification-item">
+
+        <h4>Fee payment overdue</h4>
+
+        <p>
+          Payment overdue for 15 students
+        </p>
+
+      </div>
+
+      <div class="notification-item">
+
+        <h4>Exam reminder</h4>
+
+        <p>
+          Mid-term exams starting next week
+        </p>
+
+      </div>
+
+      <div class="notification-item">
+
+        <h4>Staff meeting</h4>
+
+        <p>
+          Monthly staff meeting on May 30th
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+</body>
+</html>
