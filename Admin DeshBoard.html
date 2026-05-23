@@ -168,6 +168,7 @@
     .main{
       flex:1;
       padding:20px;
+
     }
 
     /* TOPBAR */
@@ -395,12 +396,12 @@
     .calendar-grid{
       display:grid;
       grid-template-columns:repeat(7,1fr);
-      gap:10px;
+      gap:5px;
       text-align:center;
     }
 
     .calendar-grid div{
-      padding:8px;
+      padding:5px;
       border-radius:10px;
       color:#cbd5e1;
     }
@@ -480,7 +481,10 @@
       .module-grid{
         grid-template-columns:repeat(3,1fr);
       }
-
+      .main{
+        margin-left: 260px;
+        margin-top: -1240px;
+      }
     }
 
     @media(max-width:768px){
@@ -494,7 +498,7 @@
       }
 
       .topbar{
-        flex-direction:column;
+        /* flex-direction:column; */
         gap:15px;
       }
 
