@@ -26,7 +26,7 @@ body{
   background:linear-gradient(-45deg,#f4f7fb,#dbeafe,#ecfeff,#f0fdf4);
   background-size:400% 400%;
   animation:bgMove 12s ease infinite;
-  overflow-x:hidden;
+  /* overflow-x:hidden; */
   color:#0f172a;
 }
 
@@ -505,6 +505,11 @@ button:hover{
     grid-template-columns:1fr 1fr;
   }
 
+  .topbar h1{
+    overflow: hidden;
+    width: 550px;
+    height: 60px;
+  }
 }
 
 @media(max-width:768px){
@@ -514,7 +519,7 @@ button:hover{
   }
 
   .sidebar{
-    width:100%;
+    width:268px;
   }
 
   .grid{
@@ -523,6 +528,7 @@ button:hover{
 
   .student-card{
     grid-template-columns:1fr;
+    width: fit-content;
   }
 
   .topbar{
@@ -537,6 +543,10 @@ button:hover{
 
   .top-right{
     flex-wrap:wrap;
+  }
+  .main{
+    margin-left: 260px;
+    margin-top: -1150px;
   }
 
 }
