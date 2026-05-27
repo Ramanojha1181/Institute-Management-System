@@ -940,21 +940,49 @@ body{
 const menuBtn = document.getElementById("menuBtn");
 const sidebar = document.getElementById("sidebar");
 
+function updateMenuBtnVisibility() {
+    if (window.innerWidth >= 900) {
+        menuBtn.style.display = 'none';
+    } else {
+        // show only when sidebar is not active
+        menuBtn.style.display = sidebar.classList.contains('active') ? 'none' : 'block';
+    }
+}
+
 menuBtn.addEventListener("click", () => {
     sidebar.classList.toggle("active");
+    // after opening sidebar on small screens, hide the toggle
+    if (sidebar.classList.contains('active') && window.innerWidth < 900) {
+        menuBtn.style.display = 'none';
+    } else {
+        updateMenuBtnVisibility();
+    }
 });
 
 document.addEventListener("click", (e) => {
-
     if (
         window.innerWidth < 900 &&
         !sidebar.contains(e.target) &&
         !menuBtn.contains(e.target)
     ) {
-        sidebar.classList.remove("active");
+        if (sidebar.classList.contains('active')) {
+            sidebar.classList.remove('active');
+        }
+        updateMenuBtnVisibility();
     }
-
 });
+
+window.addEventListener('resize', () => {
+    // keep menu toggle state consistent on resize
+    updateMenuBtnVisibility();
+    if (window.innerWidth >= 900) {
+        // ensure sidebar visible in desktop layout
+        sidebar.classList.remove('active');
+    }
+});
+
+// initial setup
+updateMenuBtnVisibility();
 </script>
 
 </body>
