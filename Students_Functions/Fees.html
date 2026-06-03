@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fees Portal - Student Dashboard</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <style>
+        /* ================= BASE STYLES ================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #f4f7ff;
+            overflow-x: hidden;
+            color: #333;
+        }
+
+        /* ================= LAYOUT ================= */
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ================= SIDEBAR ================= */
+        .sidebar {
+            width: 270px;
+            background: linear-gradient(180deg, #0057ff, #1ea1ff);
+            padding: 25px 20px;
+            color: #fff;
+            position: fixed;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 35px;
+        }
+
+        .logo-box {
+            width: 55px;
+            height: 55px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, .2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .logo h2 {
+            font-size: 26px;
+        }
+
+        .logo p {
+            font-size: 12px;
+            opacity: .8;
+        }
+
+        .menu {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .menu a {
+            text-decoration: none;
+            color: #fff;
+            padding: 15px 18px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: .3s;
+            font-size: 15px;
+        }
+
+        .menu a:hover,
+        .menu .active {
+            background: rgba(255, 255, 255, .2);
+        }
+
+        /* ================= TOPBAR ================= */
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+        }
+
+        .search-box {
+            flex: 1;
+            max-width: 500px;
+            background: #fff;
+            height: 58px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            gap: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, .05);
+        }
+
+        .search-box input {
+            border: none;
+            outline: none;
+            width: 100%;
+            font-size: 15px;
+            color: #444;
+        }
+
+        .top-icons {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .icon-box {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            position: relative;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, .05);
+            cursor: pointer;
+            transition: .3s;
+        }
+
+        .icon-box:hover {
+            transform: translateY(-3px);
+            background: #edf2ff;
+        }
+
+        .badge {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #ff3b30;
+            color: #fff;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .profile {
+            background: #fff;
+            padding: 10px 16px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, .05);
+        }
+
+        .profile img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .profile h4 {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .profile p {
+            font-size: 12px;
+            color: #777;
+        }
+
+        /* ================= COMMON CARDS ================= */
+        .card {
+            background: #fff;
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, .05);
+            transition: .4s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, .08);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #f0f4ff;
+            padding-bottom: 12px;
+        }
+
+        .card-header h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #222;
+        }
+
+        .main {
+            margin-left: 270px;
+            width: calc(100% - 270px);
+            padding: 25px;
+            transition: .3s ease;
+        }
+
+        /* ================= FEES STATS GRID ================= */
+        .fees-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .stat-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .stat-info h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #222;
+            line-height: 1.2;
+        }
+
+        .stat-info p {
+            font-size: 13px;
+            color: #777;
+            font-weight: 500;
+        }
+
+        .bg-blue {
+            background: #e9f1ff;
+            color: #0a5bff;
+        }
+
+        .bg-green {
+            background: #e8fff0;
+            color: #17b05c;
+        }
+
+        .bg-orange {
+            background: #fff4df;
+            color: #ff9800;
+        }
+
+        .bg-purple {
+            background: #f3e5f5;
+            color: #9c27b0;
+        }
+
+        /* ================= MAIN PORTAL GRID ================= */
+        .portal-grid {
+            display: grid;
+            grid-template-columns: 1.6fr 1fr;
+            gap: 24px;
+            margin-bottom: 25px;
+        }
+
+        .flex-column {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Fees Table Style */
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 550px;
+        }
+
+        .history-table th {
+            text-align: left;
+            padding: 12px;
+            font-size: 13px;
+            color: #888;
+            font-weight: 600;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .history-table td {
+            padding: 16px 12px;
+            font-size: 14px;
+            color: #444;
+            border-bottom: 1px solid #f6f6f6;
+            vertical-align: middle;
+        }
+
+        .history-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-paid {
+            background: #e8fff0;
+            color: #17b05c;
+        }
+
+        .status-pending {
+            background: #fff4df;
+            color: #ff9800;
+        }
+
+        .btn-download-invoice {
+            background: none;
+            border: none;
+            color: #0a5bff;
+            cursor: pointer;
+            font-size: 16px;
+            transition: .2s;
+        }
+
+        .btn-download-invoice:hover {
+            color: #003db3;
+            transform: scale(1.1);
+        }
+
+        /* Fee Breakdown Progress Structure */
+        .breakdown-item {
+            margin-bottom: 18px;
+        }
+
+        .breakdown-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: #444;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #edf2ff;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 10px;
+        }
+
+        /* ================= QUICK PAY FORM ================= */
+        .payment-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-group select,
+        .form-group input {
+            height: 46px;
+            border-radius: 12px;
+            border: 1px solid #dcdcdc;
+            padding: 0 15px;
+            font-size: 14px;
+            outline: none;
+            transition: .3s;
+        }
+
+        .form-group select:focus,
+        .form-group input:focus {
+            border-color: #0a5bff;
+            box-shadow: 0 0 0 3px rgba(10, 91, 255, 0.1);
+        }
+
+        /* Payment Methods Selector */
+        .method-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 5px 0;
+        }
+
+        .method-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: .3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .method-card i {
+            font-size: 20px;
+            color: #666;
+        }
+
+        .method-card span {
+            font-size: 12px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .method-card:hover,
+        .method-card.active {
+            border-color: #0a5bff;
+            background: #f4f8ff;
+        }
+
+        .method-card.active i,
+        .method-card.active span {
+            color: #0a5bff;
+        }
+
+        .btn-pay {
+            background: linear-gradient(90deg, #0057ff, #1ea1ff);
+            color: #fff;
+            border: none;
+            height: 48px;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: .3s;
+            margin-top: 10px;
+            box-shadow: 0 4px 12px rgba(10, 91, 255, 0.2);
+        }
+
+        .btn-pay:hover {
+            opacity: 0.95;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(10, 91, 255, 0.3);
+        }
+
+        /* ================= RESPONSIVE ================= */
+        @media(max-width:1400px) {
+            .fees-stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .portal-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media(max-width:900px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .dashboard {
+                flex-direction: column;
+            }
+
+            .main {
+                margin-left: 0;
+                width: 100%;
+                padding: 20px;
+            }
+
+            .menu-toggle-btn {
+                display: flex !important;
+            }
+        }
+
+        @media(max-width:600px) {
+            .fees-stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .method-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="dashboard">
+        <aside class="sidebar" id="sidebar">
+            <div class="logo">
+                <div class="logo-box"><i class="fa-solid fa-graduation-cap"></i></div>
+                <div>
+                    <h2>EduSmart</h2>
+                    <p>School Management</p>
+                </div>
+            </div>
+            <div class="menu">
+                <a href="Student_DashBoard.html"><i class="fa-solid fa-house"></i> Dashboard</a>
+                <a href="Attendence.html"><i class="fa-solid fa-calendar-check"></i> Attendance</a>
+                <a href="Homework.html"><i class="fa-solid fa-book"></i> Homework</a>
+                <a href="Exams.html"><i class="fa-solid fa-file-lines"></i> Exams</a>
+                <a href="Fees.html" class="active"><i class="fa-solid fa-money-bill"></i> Fees</a>
+                <a href="Timetable.html"><i class="fa-solid fa-calendar"></i> Timetable</a>
+                <a href="Online_Classes.html"><i class="fa-solid fa-video"></i> Online Classes</a>
+                <a href="Library.html"><i class="fa-solid fa-book-open"></i> Library</a>
+                <a href="Downloads.html"><i class="fa-solid fa-download"></i>Downloads</a>
+                <a href="Settings.html"><i class="fa-solid fa-gear"></i> Settings</a>
+            </div>
+        </aside>
+
+        <main class="main">
+            <div class="topbar">
+                <!-- <div class="icon-box menu-toggle-btn" id="menu-btn" style="display:none; margin-right:auto;">
+                    <i class="fa-solid fa-bars"></i>
+                </div> -->
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Search invoices, structures, receipts...">
+                </div>
+                <div class="top-icons">
+                    <div class="icon-box"><i class="fa-regular fa-bell"></i>
+                        <div class="badge">1</div>
+                    </div>
+                    <div class="profile">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile">
+                        <div>
+                            <h4>Alex Johnson</h4>
+                            <p>Grade 10 - A</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <section class="fees-stats-grid">
+                <div class="card stat-card">
+                    <div class="stat-icon bg-blue"><i class="fa-solid fa-wallet"></i></div>
+                    <div class="stat-info">
+                        <h2>$1,200</h2>
+                        <p>Total Annual Fee</p>
+                    </div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-icon bg-green"><i class="fa-solid fa-circle-check"></i></div>
+                    <div class="stat-info">
+                        <h2>$850</h2>
+                        <p>Total Paid Amount</p>
+                    </div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-icon bg-orange"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                    <div class="stat-info">
+                        <h2>$350</h2>
+                        <p>Total Remaining Balance</p>
+                    </div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-icon bg-purple"><i class="fa-solid fa-calendar-day"></i></div>
+                    <div class="stat-info">
+                        <h2>15 June</h2>
+                        <p>Next Due Date</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="portal-grid">
+
+                <div class="flex-column">
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Fee Component Breakdown</h3>
+                            <span style="font-size:13px; font-weight:600; color:#0a5bff;">Academic Year 2025-26</span>
+                        </div>
+
+                        <div class="breakdown-item">
+                            <div class="breakdown-info"><span>Tution Fees</span><span>$600 / $600 (Paid)</span></div>
+                            <div class="progress-bar">
+                                <div class="progress-fill bg-green" style="width: 100%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="breakdown-item">
+                            <div class="breakdown-info"><span>Transport Facility</span><span>$200 / $300
+                                    (Pending)</span></div>
+                            <div class="progress-bar">
+                                <div class="progress-fill bg-orange" style="width: 66.6%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="breakdown-item">
+                            <div class="breakdown-info"><span>Computer & Science Lab</span><span>$50 / $150
+                                    (Pending)</span></div>
+                            <div class="progress-bar">
+                                <div class="progress-fill bg-orange" style="width: 33.3%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="breakdown-item">
+                            <div class="breakdown-info"><span>Library & Examination Fees</span><span>$150 / $150
+                                    (Paid)</span></div>
+                            <div class="progress-bar">
+                                <div class="progress-fill bg-green" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Recent Transactions</h3>
+                            <button
+                                style="border:none; background:transparent; color:#0a5bff; font-weight:600; cursor:pointer;"><i
+                                    class="fa-solid fa-filter"></i> Filter</button>
+                        </div>
+                        <div class="table-wrapper">
+                            <table class="history-table">
+                                <thead>
+                                    <tr>
+                                        <th>Receipt ID</th>
+                                        <th>Fee Type</th>
+                                        <th>Date</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>#REC-8942</strong></td>
+                                        <td>Quarter 2 Tuition Fee</td>
+                                        <td>12 May 2026</td>
+                                        <td><strong>$300.00</strong></td>
+                                        <td><span class="status-badge status-paid">Paid</span></td>
+                                        <td><button class="btn-download-invoice" title="Download Receipt"><i
+                                                    class="fa-solid fa-file-arrow-down"></i></button></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>#REC-8711</strong></td>
+                                        <td>Library & Exam Kit</td>
+                                        <td>04 Apr 2026</td>
+                                        <td><strong>$150.00</strong></td>
+                                        <td><span class="status-badge status-paid">Paid</span></td>
+                                        <td><button class="btn-download-invoice" title="Download Receipt"><i
+                                                    class="fa-solid fa-file-arrow-down"></i></button></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>#REC-8530</strong></td>
+                                        <td>Quarter 1 Tuition + Transport</td>
+                                        <td>10 Jan 2026</td>
+                                        <td><strong>$400.00</strong></td>
+                                        <td><span class="status-badge status-paid">Paid</span></td>
+                                        <td><button class="btn-download-invoice" title="Download Receipt"><i
+                                                    class="fa-solid fa-file-arrow-down"></i></button></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>#REC-9011</strong></td>
+                                        <td>Lab & Smart Class Upgrade</td>
+                                        <td>Pending</td>
+                                        <td><strong>$100.00</strong></td>
+                                        <td><span class="status-badge status-pending">Pending</span></td>
+                                        <td><button class="btn-download-invoice" style="color:#ccc; cursor:not-allowed;"
+                                                disabled><i class="fa-solid fa-ban"></i></button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Quick Online Pay</h3>
+                            <i class="fa-solid fa-shield-halved" style="color:#17b05c;" title="Secure Gateway"></i>
+                        </div>
+
+                        <form class="payment-form" id="payForm" onsubmit="handlePayment(event)">
+                            <div class="form-group">
+                                <label for="fee-category">Select Fee Component</label>
+                                <select id="fee-category" required>
+                                    <option value="" disabled selected>-- Choose Category --</option>
+                                    <option value="100">Transport Facility Dues ($100)</option>
+                                    <option value="100">Computer & Science Lab ($100)</option>
+                                    <option value="350">Total Outstandings Balance ($350)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="pay-amount">Amount to Pay ($)</label>
+                                <input type="number" id="pay-amount" placeholder="0.00" min="1" required readonly>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Select Payment Method</label>
+                                <div class="method-grid">
+                                    <div class="method-card active" onclick="selectMethod(this)">
+                                        <i class="fa-regular fa-credit-card"></i>
+                                        <span>Card</span>
+                                    </div>
+                                    <div class="method-card" onclick="selectMethod(this)">
+                                        <i class="fa-solid fa-qrcode"></i>
+                                        <span>UPI / QR</span>
+                                    </div>
+                                    <div class="method-card" onclick="selectMethod(this)">
+                                        <i class="fa-solid fa-building-columns"></i>
+                                        <span>Net Bank</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn-pay">Proceed Secure Payment</button>
+                        </form>
+                    </div>
+                </div>
+
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Automate Amount selection from Dropdown options
+        const feeSelect = document.getElementById('fee-category');
+        const amountInput = document.getElementById('pay-amount');
+
+        feeSelect.addEventListener('change', function () {
+            amountInput.value = this.value;
+        });
+
+        // Payment Method active selection toggle
+        function selectMethod(element) {
+            document.querySelectorAll('.method-card').forEach(card => card.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        // Handle Mock Gateway Process alert 
+        function handlePayment(e) {
+            e.preventDefault();
+            const amt = amountInput.value;
+            if (amt) {
+                alert(`Redirecting Secure Gateway to process your payment of $${amt}. Please do not refresh!`);
+            }
+        }
+
+        // Mobile Sidebar responsiveness trigger setup
+        const menuBtn = document.getElementById('menu-btn');
+        const sidebar = document.getElementById('sidebar');
+
+        function checkLayout() {
+            if (window.innerWidth <= 900) {
+                menuBtn.style.display = 'flex';
+            } else {
+                menuBtn.style.display = 'none';
+                sidebar.classList.remove('active');
+            }
+        }
+
+        menuBtn.addEventListener('click', (e) => {
+            sidebar.classList.toggle('active');
+            e.stopPropagation();
+        });
+
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 900 && !sidebar.contains(e.target) && sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+            }
+        });
+
+        window.addEventListener('resize', checkLayout);
+        window.addEventListener('load', checkLayout);
+    </script>
+
+</body>
+
+</html>

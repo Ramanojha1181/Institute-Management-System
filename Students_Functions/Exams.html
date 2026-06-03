@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exams - School Dashboard</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <style>
+        /* ================= BASE STYLES ================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #f4f7ff;
+            overflow-x: hidden;
+            color: #333;
+        }
+
+        /* ================= LAYOUT ================= */
+        .dashboard {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ================= SIDEBAR ================= */
+.sidebar {
+    width: 270px;
+    background: linear-gradient(180deg, #0057ff, #1ea1ff);
+    padding: 25px 20px;
+    color: #fff;
+    position: fixed;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 35px;
+}
+
+.logo-box {
+    width: 55px;
+    height: 55px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, .2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.logo h2 { font-size: 26px; }
+.logo p { font-size: 12px; opacity: .8; }
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.menu a {
+    text-decoration: none;
+    color: #fff;
+    padding: 15px 18px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: .3s;
+    font-size: 15px;
+}
+
+.menu a:hover, 
+.menu .active {
+    background: rgba(255, 255, 255, .2);
+}
+
+        /* ================= TOPBAR ================= */
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .search-box {
+            flex: 1;
+            max-width: 450px;
+            background: #fff;
+            height: 54px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            gap: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, .03);
+        }
+
+        .search-box input {
+            border: none;
+            outline: none;
+            width: 100%;
+            font-size: 15px;
+            color: #444;
+        }
+
+        .top-icons {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .icon-box {
+            width: 50px;
+            height: 50px;
+            border-radius: 16px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            position: relative;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, .03);
+            cursor: pointer;
+            transition: .3s;
+        }
+
+        .icon-box:hover {
+            background: #edf2ff;
+            transform: translateY(-3px);
+        }
+
+        .badge {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #ff3b30;
+            color: #fff;
+            font-size: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .profile {
+            background: #fff;
+            padding: 8px 16px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, .03);
+            cursor: pointer;
+            transition: .3s;
+        }
+
+        .profile:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0, 55, 255, 0.06);
+        }
+
+        .profile img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .profile h4 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .profile p {
+            font-size: 12px;
+            color: #777;
+        }
+
+        /* ================= COMMON CARDS ================= */
+        .card {
+            background: #fff;
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, .03);
+            transition: .4s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, .06);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-header h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #222;
+        }
+
+        /* ================= EXAM STATS GRID ================= */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .stat-info h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+            line-height: 1.2;
+        }
+
+        .stat-info p {
+            font-size: 13px;
+            color: #777;
+            font-weight: 500;
+        }
+
+        /* Colors */
+        .bg-blue {
+            background: #e9f1ff;
+            color: #0a5bff;
+        }
+
+        .bg-orange {
+            background: #fff4df;
+            color: #ff9800;
+        }
+
+        .bg-green {
+            background: #e8fff0;
+            color: #17b05c;
+        }
+
+        .bg-purple {
+            background: #f3e5f5;
+            color: #9c27b0;
+        }
+
+        /* ================= MAIN EXAM CONTENT ================= */
+        .exam-grid {
+            display: grid;
+            grid-template-columns: 1.8fr 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        /* Date Sheet Table */
+        .exam-table-wrapper {
+            overflow-x: auto;
+        }
+
+        .exam-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+
+        .exam-table th {
+            text-align: left;
+            padding: 12px 15px;
+            font-size: 13px;
+            color: #888;
+            font-weight: 600;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .exam-table td {
+            padding: 16px 15px;
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
+            border-bottom: 1px solid #f9f9f9;
+            vertical-align: middle;
+        }
+
+        .exam-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .exam-table tr:hover {
+            background: #f8faff;
+        }
+
+        .subject-cell {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .subject-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .badge-status {
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .status-upcoming {
+            background: #e9f1ff;
+            color: #0a5bff;
+        }
+
+        .status-today {
+            background: #fff4df;
+            color: #ff9800;
+            animation: pulse 2s infinite;
+        }
+
+        .status-completed {
+            background: #e8fff0;
+            color: #17b05c;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 6px rgba(255, 152, 0, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 152, 0, 0);
+            }
+        }
+
+        /* Admit Card Banner */
+        .admit-card-banner {
+            background: linear-gradient(135deg, #0057ff, #4ca8ff);
+            border-radius: 20px;
+            padding: 25px;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .admit-card-banner::before {
+            content: '\f2c2';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: -20px;
+            bottom: -30px;
+            font-size: 120px;
+            opacity: 0.1;
+        }
+
+        .admit-card-banner h3 {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .admit-card-banner p {
+            font-size: 13px;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        .btn-download {
+            background: #fff;
+            color: #0057ff;
+            padding: 10px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            width: max-content;
+            transition: .3s;
+        }
+
+        .btn-download:hover {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        /* Past Results List */
+        .result-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: #f8faff;
+            border-radius: 16px;
+            transition: .3s;
+        }
+
+        .result-item:hover {
+            background: #f0f4ff;
+        }
+
+        .result-info h4 {
+            font-size: 14px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .result-info p {
+            font-size: 12px;
+            color: #777;
+            margin-top: 3px;
+        }
+
+        .result-score {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0a5bff;
+        }
+
+        /* ================= NEW BOTTOM GRID (TRACKER & PRACTICE) ================= */
+        .bottom-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        /* Preparation Tracker */
+        .prep-list {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .prep-item-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 8px;
+        }
+
+        .prep-item-header span:last-child {
+            color: #0a5bff;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #edf2ff;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar .fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 1s ease-in-out;
+        }
+
+        /* Mock Tests & Practice */
+        .mock-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .mock-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            border: 1px solid #f0f0f0;
+            border-radius: 16px;
+            transition: .3s;
+        }
+
+        .mock-item:hover {
+            border-color: #d4e2ff;
+            box-shadow: 0 8px 20px rgba(10, 91, 255, 0.06);
+        }
+
+        .mock-info {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .mock-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .mock-details h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .mock-details p {
+            font-size: 12px;
+            color: #777;
+            margin-top: 3px;
+        }
+
+        .btn-action {
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: .3s;
+        }
+
+        .btn-primary {
+            background: #0a5bff;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #0043c9;
+            box-shadow: 0 4px 10px rgba(10, 91, 255, 0.2);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #0a5bff;
+            color: #0a5bff;
+        }
+
+        .btn-outline:hover {
+            background: #f4f7ff;
+        }
+
+        /* ================= RESPONSIVE ================= */
+        @media(max-width:1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media(max-width:950px) {
+
+            .exam-grid,
+            .bottom-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media(max-width:900px) {
+            /* .sidebar {
+                transform: translateX(-100%);
+                position: fixed;
+                width: 260px;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            } */
+              .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+    }
+    .dashboard {
+        flex-direction: column;
+    }
+
+            .main {
+                margin-left: 0;
+                width: 100%;
+                padding: 20px;
+            }
+        }
+
+        @media(max-width:600px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .mock-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .mock-item .btn-action {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="dashboard">
+        <aside class="sidebar" id="sidebar">
+            <div class="logo">
+                <div class="logo-box"><i class="fa-solid fa-graduation-cap"></i></div>
+                <div>
+                    <h2>EduSmart</h2>
+                    <p>School Management</p>
+                </div>
+            </div>
+            <div class="menu">
+                <a href="Student_DashBoard.html"><i class="fa-solid fa-house"></i> Dashboard</a>
+                <a href="Attendence.html"><i class="fa-solid fa-calendar-check"></i> Attendance</a>
+                <a href="Homework.html"><i class="fa-solid fa-book"></i> Homework</a>
+                <a href="Exams.html" class="active"><i class="fa-solid fa-file-lines"></i> Exams</a>
+                <a href="Fees.html"><i class="fa-solid fa-money-bill"></i> Fees</a>
+                <a href="Timetable.html"><i class="fa-solid fa-calendar"></i> Timetable</a>
+                <a href="Online_Classes.html"><i class="fa-solid fa-video"></i>Online Classes</a>
+                <a href="Library.html"><i class="fa-solid fa-book-open"></i>Library</a>
+                <a href="Downloads.html"><i class="fa-solid fa-download"></i> Downloads</a>
+                <a href="Settings.html"><i class="fa-solid fa-gear"></i> Settings</a>
+            </div>
+        </aside>
+
+        <main class="main">
+            <div class="topbar">
+                <!-- <div class="icon-box" id="menu-toggle" style="display:none; margin-right:auto;">
+                    <i class="fa-solid fa-bars"></i>
+                </div> -->
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Search syllabus, exam dates, sample papers...">
+                </div>
+                <div class="top-icons">
+                    <div class="icon-box"><i class="fa-regular fa-bell"></i>
+                        <div class="badge">3</div>
+                    </div>
+                    <div class="profile">
+                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Profile">
+                        <div>
+                            <h4>Emma Thompson</h4>
+                            <p>Grade 9 - Section B</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <section class="stats-grid">
+                <div class="card stat-card">
+                    <div class="stat-icon bg-blue"><i class="fa-solid fa-calendar-days"></i></div>
+                    <div class="stat-info">
+                        <h2>04</h2>
+                        <p>Upcoming Exams</p>
+                    </div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-icon bg-orange"><i class="fa-solid fa-bullseye"></i></div>
+                    <div class="stat-info">
+                        <h2>02</h2>
+                        <p>Pending Mocks</p>
+                    </div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-icon bg-green"><i class="fa-solid fa-chart-line"></i></div>
+                    <div class="stat-info">
+                        <h2>88%</h2>
+                        <p>Average Score</p>
+                    </div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-icon bg-purple"><i class="fa-solid fa-award"></i></div>
+                    <div class="stat-info">
+                        <h2>Rank 3</h2>
+                        <p>Last Term</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="exam-grid">
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Final Term Examination Schedule</h3>
+                        <button
+                            style="border:none; background:transparent; color:#0a5bff; font-weight:600; cursor:pointer;"><i
+                                class="fa-solid fa-print"></i> Print</button>
+                    </div>
+
+                    <div class="exam-table-wrapper">
+                        <table class="exam-table">
+                            <thead>
+                                <tr>
+                                    <th>Subject</th>
+                                    <th>Date & Time</th>
+                                    <th>Room Number</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="subject-cell">
+                                            <div class="subject-icon bg-blue"><i class="fa-solid fa-calculator"></i>
+                                            </div>
+                                            <div>
+                                                <strong>Mathematics</strong>
+                                                <div style="font-size:12px; color:#777;">Algebra & Geometry</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <strong>15 May, 2026</strong><br>
+                                        <span style="font-size:12px; color:#777;">09:00 AM - 12:00 PM</span>
+                                    </td>
+                                    <td>Room 101</td>
+                                    <td><span class="badge-status status-completed">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="subject-cell">
+                                            <div class="subject-icon bg-green"><i class="fa-solid fa-flask"></i></div>
+                                            <div>
+                                                <strong>Science</strong>
+                                                <div style="font-size:12px; color:#777;">Physics & Chemistry</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <strong>18 May, 2026</strong><br>
+                                        <span style="font-size:12px; color:#777;">09:00 AM - 12:00 PM</span>
+                                    </td>
+                                    <td>Science Lab</td>
+                                    <td><span class="badge-status status-completed">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="subject-cell">
+                                            <div class="subject-icon bg-orange"><i class="fa-solid fa-book-open"></i>
+                                            </div>
+                                            <div>
+                                                <strong>English Literature</strong>
+                                                <div style="font-size:12px; color:#777;">Prose & Grammar</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <strong>20 May, 2026</strong><br>
+                                        <span style="font-size:12px; color:#777;">10:00 AM - 01:00 PM</span>
+                                    </td>
+                                    <td>Room 104</td>
+                                    <td><span class="badge-status status-upcoming">Upcoming</span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="subject-cell">
+                                            <div class="subject-icon bg-purple"><i class="fa-solid fa-globe"></i></div>
+                                            <div>
+                                                <strong>Social Studies</strong>
+                                                <div style="font-size:12px; color:#777;">History & Geography</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <strong>22 May, 2026</strong><br>
+                                        <span style="font-size:12px; color:#777;">09:00 AM - 11:30 AM</span>
+                                    </td>
+                                    <td>Room 105</td>
+                                    <td><span class="badge-status status-upcoming">Upcoming</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="admit-card-banner">
+                        <h3>Download Hall Ticket</h3>
+                        <p>Your official Hall Ticket for the Final Term Examinations is ready. Please download and print
+                            it before the exams begin.</p>
+                        <a href="#" class="btn-download"><i class="fa-solid fa-download"></i> Download PDF</a>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header" style="margin-bottom:15px;">
+                            <h3>Previous Results</h3>
+                            <a href="#"
+                                style="font-size:13px; color:#0a5bff; text-decoration:none; font-weight:500;">View
+                                All</a>
+                        </div>
+
+                        <div class="result-list">
+                            <div class="result-item">
+                                <div class="result-info">
+                                    <h4>Grade 8 Final Exams</h4>
+                                    <p>Academic Year 2024-25</p>
+                                </div>
+                                <div class="result-score">92%</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-info">
+                                    <h4>Mid-Term Exams</h4>
+                                    <p>Grade 9 - All Subjects</p>
+                                </div>
+                                <div class="result-score" style="color:#17b05c;">A+</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+            <section class="bottom-grid">
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Exam Preparation Tracker</h3>
+                        <i class="fa-solid fa-ellipsis-vertical" style="color:#888; cursor:pointer;"></i>
+                    </div>
+                    <p style="font-size:13px; color:#777; margin-bottom: 20px;">Syllabus covered for upcoming exams
+                        based on teacher's log.</p>
+
+                    <div class="prep-list">
+                        <div>
+                            <div class="prep-item-header">
+                                <span>English Literature</span>
+                                <span>95% Ready</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="fill bg-orange" style="width: 95%;"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="prep-item-header">
+                                <span>Social Studies</span>
+                                <span>70% Ready</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="fill bg-purple" style="width: 70%;"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="prep-item-header">
+                                <span>Mathematics (Completed)</span>
+                                <span style="color:#17b05c;">100% Ready</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="fill bg-green" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Practice & Mock Tests</h3>
+                        <a href="#" style="font-size:13px; color:#0a5bff; text-decoration:none; font-weight:500;">See
+                            Library</a>
+                    </div>
+
+                    <div class="mock-list">
+                        <div class="mock-item">
+                            <div class="mock-info">
+                                <div class="mock-icon bg-orange"><i class="fa-solid fa-file-pdf"></i></div>
+                                <div class="mock-details">
+                                    <h4>English Sample Paper 2026</h4>
+                                    <p>Based on latest syllabus</p>
+                                </div>
+                            </div>
+                            <button class="btn-action btn-outline"><i class="fa-solid fa-download"></i>
+                                Download</button>
+                        </div>
+
+                        <div class="mock-item">
+                            <div class="mock-info">
+                                <div class="mock-icon bg-purple"><i class="fa-solid fa-laptop-code"></i></div>
+                                <div class="mock-details">
+                                    <h4>Social Studies Quiz</h4>
+                                    <p>30 Mins • 25 Questions</p>
+                                </div>
+                            </div>
+                            <button class="btn-action btn-primary">Start Test</button>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        // Toggle Mobile Menu
+        const menuToggle = document.getElementById('menu-toggle');
+        const sidebar = document.getElementById('sidebar');
+
+        function checkWidth() {
+            if (window.innerWidth <= 900) {
+                menuToggle.style.display = 'flex';
+            } else {
+                menuToggle.style.display = 'none';
+                sidebar.classList.remove('active');
+            }
+        }
+        menuToggle.addEventListener('click', (e) => {
+            sidebar.classList.toggle('active');
+            e.stopPropagation();
+        });
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 900 && !sidebar.contains(e.target) && sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+            }
+        });
+        window.addEventListener('resize', checkWidth);
+        window.addEventListener('load', checkWidth);
+    </script>
+
+</body>
+
+</html>

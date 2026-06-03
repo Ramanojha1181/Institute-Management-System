@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homework - Student Dashboard</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <style>
+        /* ================= BASE STYLES ================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #f4f7ff;
+            overflow-x: hidden;
+            color: #333;
+        }
+
+        /* ================= LAYOUT ================= */
+        .dashboard{
+    display:flex;
+    min-height:100vh;
+}
+
+/* ================= SIDEBAR ================= */
+
+.sidebar{
+    width:270px;
+    background:linear-gradient(180deg,#0057ff,#1ea1ff);
+    padding:25px 20px;
+    color:#fff;
+    position:fixed;
+    height:100%;
+    overflow-y:auto;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin-bottom:35px;
+}
+
+.logo-box{
+    width:55px;
+    height:55px;
+    border-radius:18px;
+    background:rgba(255,255,255,.2);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+}
+
+.logo h2{
+    font-size:26px;
+}
+
+.logo p{
+    font-size:12px;
+    opacity:.8;
+}
+
+.menu{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.menu a{
+    text-decoration:none;
+    color:#fff;
+    padding:15px 18px;
+    border-radius:16px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    transition:.3s;
+    font-size:15px;
+}
+
+.menu a:hover,
+.menu .active{
+    background:rgba(255,255,255,.2);
+}
+
+        /* ================= TOPBAR ================= */
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .search-box {
+            flex: 1;
+            max-width: 450px;
+            background: #fff;
+            height: 54px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            gap: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, .03);
+        }
+
+        .search-box input {
+            border: none;
+            outline: none;
+            width: 100%;
+            font-size: 15px;
+            color: #444;
+        }
+
+        .top-icons {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .icon-box {
+            width: 50px;
+            height: 50px;
+            border-radius: 16px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            position: relative;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, .03);
+            cursor: pointer;
+            transition: .3s;
+        }
+
+        .icon-box:hover {
+            background: #edf2ff;
+            transform: translateY(-3px);
+        }
+
+        .badge {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #ff3b30;
+            color: #fff;
+            font-size: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .profile {
+            background: #fff;
+            padding: 8px 16px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, .03);
+            cursor: pointer;
+            transition: .3s;
+        }
+
+        .profile:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0, 55, 255, 0.06);
+        }
+
+        .profile img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .profile h4 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .profile p {
+            font-size: 12px;
+            color: #777;
+        }
+
+        /* ================= COMMON CARDS ================= */
+        .card {
+            background: #fff;
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, .03);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-header h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #222;
+        }
+
+        .main {
+            margin-left: 270px;
+            width: calc(100% - 270px);
+            padding: 30px;
+            transition: .3s ease;
+        }
+        /* ================= STATS GRID ================= */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            transition: .3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 55, 255, 0.06);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .stat-info h2 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #333;
+            line-height: 1.2;
+        }
+
+        .stat-info p {
+            font-size: 13px;
+            color: #777;
+            font-weight: 500;
+        }
+
+        /* Colors */
+        .text-blue {
+            color: #0a5bff;
+        }
+
+        .bg-blue {
+            background: #e9f1ff;
+            color: #0a5bff;
+        }
+
+        .text-orange {
+            color: #ff9800;
+        }
+
+        .bg-orange {
+            background: #fff4df;
+            color: #ff9800;
+        }
+
+        .text-green {
+            color: #17b05c;
+        }
+
+        .bg-green {
+            background: #e8fff0;
+            color: #17b05c;
+        }
+
+        .text-purple {
+            color: #9c27b0;
+        }
+
+        .bg-purple {
+            background: #f3e5f5;
+            color: #9c27b0;
+        }
+
+        /* ================= HOMEWORK MAIN GRID ================= */
+        .hw-grid {
+            display: grid;
+            grid-template-columns: 1.8fr 1fr;
+            gap: 24px;
+        }
+
+        /* Filter Tabs */
+        .hw-tabs {
+            display: flex;
+            gap: 10px;
+            background: #f4f7ff;
+            padding: 6px;
+            border-radius: 14px;
+        }
+
+        .hw-tab {
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            transition: .3s;
+        }
+
+        .hw-tab.active {
+            background: #fff;
+            color: #0a5bff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Homework List */
+        .hw-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .hw-item {
+            background: #fff;
+            border: 1px solid #f0f0f0;
+            border-radius: 18px;
+            padding: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: .3s;
+        }
+
+        .hw-item:hover {
+            border-color: #d4e2ff;
+            box-shadow: 0 8px 24px rgba(10, 91, 255, 0.08);
+        }
+
+        .hw-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-right: 15px;
+        }
+
+        .hw-details {
+            flex: 1;
+        }
+
+        .hw-details h4 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .hw-details p {
+            font-size: 12px;
+            color: #777;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .hw-details p span i {
+            margin-right: 4px;
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: #fff4df;
+            color: #ff9800;
+            border: 1px solid rgba(255, 152, 0, 0.2);
+        }
+
+        .status-submitted {
+            background: #e8fff0;
+            color: #17b05c;
+            border: 1px solid rgba(23, 176, 92, 0.2);
+        }
+
+        .status-urgent {
+            background: #ffeaea;
+            color: #ff3b3b;
+            border: 1px solid rgba(255, 59, 59, 0.2);
+        }
+
+        /* Actions */
+        .btn-action {
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: .3s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: #0a5bff;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #0046cd;
+            box-shadow: 0 4px 12px rgba(10, 91, 255, 0.2);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #0a5bff;
+            border: 1px solid #0a5bff;
+        }
+
+        .btn-outline:hover {
+            background: #f4f7ff;
+        }
+
+        /* ================= SUBMISSION FORM ================= */
+        .submit-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-control {
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            background: #f9f9f9;
+            font-size: 14px;
+            outline: none;
+            transition: .3s;
+            color: #333;
+        }
+
+        .form-control:focus {
+            border-color: #0a5bff;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(10, 91, 255, 0.1);
+        }
+
+        /* File Dropzone */
+        .dropzone {
+            border: 2px dashed #c0d3ff;
+            background: #f4f7ff;
+            border-radius: 16px;
+            padding: 30px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: .3s;
+        }
+
+        .dropzone:hover {
+            border-color: #0a5bff;
+            background: #edf2ff;
+        }
+
+        .dropzone i {
+            font-size: 32px;
+            color: #0a5bff;
+            margin-bottom: 10px;
+        }
+
+        .dropzone p {
+            font-size: 13px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .dropzone span {
+            font-size: 11px;
+            color: #999;
+        }
+
+        .dropzone input {
+            display: none;
+        }
+
+        .file-name {
+            font-size: 12px;
+            color: #17b05c;
+            font-weight: 600;
+            margin-top: 10px;
+            display: none;
+        }
+
+        /* ================= RESPONSIVE ================= */
+        @media(max-width:1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media(max-width:950px) {
+            .hw-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media(max-width:900px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .dashboard {
+                flex-direction: column;
+            }
+
+            .main {
+                margin-left: 0;
+                width: 100%;
+                padding: 20px;
+            }
+
+            .hw-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .hw-actions {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+
+        @media(max-width:600px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hw-details p {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="dashboard">
+        <aside class="sidebar" id="sidebar">
+            <div class="logo">
+                <div class="logo-box"><i class="fa-solid fa-graduation-cap"></i></div>
+                <div>
+                    <h2>EduSmart</h2>
+                    <p>School Management</p>
+                </div>
+            </div>
+            <div class="menu">
+                <a href="Student_DashBoard.html"><i class="fa-solid fa-house"></i> Dashboard</a>
+                <a href="Attendence.html"><i class="fa-solid fa-calendar-check"></i> Attendance</a>
+                <a href="Homework.html" class="active"><i class="fa-solid fa-book"></i> Homework</a>
+                <a href="Exams.html"><i class="fa-solid fa-file-lines"></i> Exams</a>
+                <a href="Fees.html"><i class="fa-solid fa-money-bill"></i> Fees</a>
+                <a href="Timetable.html"><i class="fa-solid fa-calendar"></i> Timetable</a>
+                <a href="Online_Classes.html"><i class="fa-solid fa-video"></i> Online Classes</a>
+                <a href="Library.html"><i class="fa-solid fa-book-open"></i> Library</a>
+                <a href="Downloads.html"><i class="fa-solid fa-download"></i>Downloads</a>
+                <a href="Settings.html"><i class="fa-solid fa-gear"></i> Settings</a>
+            </div>
+        </aside>
+
+        <main class="main">
+            <div class="topbar">
+                <!-- <div class="icon-box" id="menu-toggle" style="display:none; margin-right:auto;">
+                <i class="fa-solid fa-bars"></i>
+            </div> -->
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Search assignments, subjects...">
+                </div>
+                <div class="top-icons">
+                    <div class="icon-box"><i class="fa-regular fa-bell"></i>
+                        <div class="badge">2</div>
+                    </div>
+                    <div class="profile">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Profile">
+                        <div>
+                            <h4>Sanaya</h4>
+                            <p>B.Tech 2nd Year</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <section class="stats-grid">
+                <div class="card stat-card">
+                    <div class="stat-icon bg-blue"><i class="fa-solid fa-book-open"></i></div>
+                    <div class="stat-info">
+                        <h2>15</h2>
+                        <p>Total Assigned</p>
+                    </div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-icon bg-orange"><i class="fa-solid fa-clock"></i></div>
+                    <div class="stat-info">
+                        <h2>03</h2>
+                        <p>Pending</p>
+                    </div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-icon bg-green"><i class="fa-solid fa-check-double"></i></div>
+                    <div class="stat-info">
+                        <h2>12</h2>
+                        <p>Completed</p>
+                    </div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-icon bg-purple"><i class="fa-solid fa-award"></i></div>
+                    <div class="stat-info">
+                        <h2>8.5</h2>
+                        <p>Avg. Score</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="hw-grid">
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>My Assignments</h3>
+                        <div class="hw-tabs">
+                            <div class="hw-tab active">All</div>
+                            <div class="hw-tab">Pending</div>
+                            <div class="hw-tab">Completed</div>
+                        </div>
+                    </div>
+
+                    <div class="hw-list">
+                        <div class="hw-item">
+                            <div style="display:flex; align-items:center;">
+                                <div class="hw-icon bg-orange"><i class="fa-solid fa-flask"></i></div>
+                                <div class="hw-details">
+                                    <h4>Organic Chemistry: SN1/SN2 Mechanism</h4>
+                                    <p>
+                                        <span class="text-orange"><i class="fa-regular fa-clock"></i> Due Tomorrow,
+                                            11:59 PM</span>
+                                        <span><i class="fa-solid fa-paperclip"></i> 1 Attachment</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="hw-actions">
+                                <span class="status-badge status-urgent" style="margin-right:10px;">Urgent</span>
+                                <button class="btn-action btn-primary">Submit Now</button>
+                            </div>
+                        </div>
+
+                        <div class="hw-item">
+                            <div style="display:flex; align-items:center;">
+                                <div class="hw-icon bg-blue"><i class="fa-solid fa-calculator"></i></div>
+                                <div class="hw-details">
+                                    <h4>Calculus: Differential Equations</h4>
+                                    <p>
+                                        <span><i class="fa-regular fa-clock"></i> Due in 3 Days</span>
+                                        <span><i class="fa-solid fa-file-pdf"></i> Questions.pdf</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="hw-actions">
+                                <span class="status-badge status-pending" style="margin-right:10px;">Pending</span>
+                                <button class="btn-action btn-outline">View Details</button>
+                            </div>
+                        </div>
+
+                        <div class="hw-item">
+                            <div style="display:flex; align-items:center;">
+                                <div class="hw-icon bg-green"><i class="fa-solid fa-lightbulb"></i></div>
+                                <div class="hw-details">
+                                    <h4>Physics: Optics Lab Report</h4>
+                                    <p>
+                                        <span class="text-green"><i class="fa-solid fa-check"></i> Submitted on 12
+                                            May</span>
+                                        <span><i class="fa-solid fa-comment-dots"></i> Awaiting Grade</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="hw-actions">
+                                <span class="status-badge status-submitted" style="margin-right:10px;">Submitted</span>
+                                <button class="btn-action btn-outline" style="border-color:#e0e0e0; color:#555;">View
+                                    File</button>
+                            </div>
+                        </div>
+
+                        <div class="hw-item">
+                            <div style="display:flex; align-items:center;">
+                                <div class="hw-icon bg-purple"><i class="fa-solid fa-laptop-code"></i></div>
+                                <div class="hw-details">
+                                    <h4>Computer Basics: Internship File</h4>
+                                    <p>
+                                        <span class="text-purple"><i class="fa-solid fa-star"></i> Graded: 9.5/10</span>
+                                        <span><i class="fa-solid fa-user-tie"></i> Prof. Sharma</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="hw-actions">
+                                <button class="btn-action btn-outline"
+                                    style="border-color:#e0e0e0; color:#555;">Feedback</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="height:fit-content;">
+                    <div class="card-header">
+                        <h3>Submit Assignment</h3>
+                    </div>
+
+                    <form class="submit-form">
+                        <div class="form-group">
+                            <label>Select Subject</label>
+                            <select class="form-control">
+                                <option>Organic Chemistry</option>
+                                <option>Mathematics (Calculus)</option>
+                                <option>Physics (Optics)</option>
+                                <option>Computer Basics</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Assignment Title</label>
+                            <input type="text" class="form-control" placeholder="e.g. SN1/SN2 Mechanism Notes">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Upload File</label>
+                            <div class="dropzone" onclick="document.getElementById('file-upload').click()">
+                                <i class="fa-solid fa-cloud-arrow-up"></i>
+                                <p>Click to browse or drag file here</p>
+                                <span>Support PDF, JPG, PNG (Max 10MB)</span>
+                                <input type="file" id="file-upload" onchange="showFileName()">
+                                <div id="file-name-display" class="file-name"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Additional Notes (Optional)</label>
+                            <textarea class="form-control" rows="3"
+                                placeholder="Write any message for your teacher..."></textarea>
+                        </div>
+
+                        <button type="button" class="btn-action btn-primary"
+                            style="width:100%; padding:14px; font-size:15px; margin-top:10px;">
+                            <i class="fa-solid fa-paper-plane" style="margin-right:8px;"></i> Submit Assignment
+                        </button>
+                    </form>
+                </div>
+
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Toggle Mobile Menu
+        const menuToggle = document.getElementById('menu-toggle');
+        const sidebar = document.getElementById('sidebar');
+
+        function checkWidth() {
+            if (window.innerWidth <= 900) {
+                menuToggle.style.display = 'flex';
+            } else {
+                menuToggle.style.display = 'none';
+                sidebar.classList.remove('active');
+            }
+        }
+        menuToggle.addEventListener('click', (e) => {
+            sidebar.classList.toggle('active');
+            e.stopPropagation();
+        });
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 900 && !sidebar.contains(e.target) && sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+            }
+        });
+        window.addEventListener('resize', checkWidth);
+        window.addEventListener('load', checkWidth);
+
+        // Show File Name on Upload Select
+        function showFileName() {
+            const fileInput = document.getElementById('file-upload');
+            const fileNameDisplay = document.getElementById('file-name-display');
+            if (fileInput.files.length > 0) {
+                fileNameDisplay.innerHTML = `<i class="fa-solid fa-file-circle-check"></i> Selected: ${fileInput.files[0].name}`;
+                fileNameDisplay.style.display = 'block';
+            }
+        }
+
+        // Interactive Tabs (Visual Only for UI Demo)
+        const tabs = document.querySelectorAll('.hw-tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+            });
+        });
+    </script>
+
+</body>
+
+</html>

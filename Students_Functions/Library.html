@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Dashboard - Library Management</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+<style>
+/* ================= GLOBAL STYLES ================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: #f4f7ff;
+    overflow-x: hidden;
+    color: #333;
+}
+
+/* ================= DASHBOARD LAYOUT ================= */
+.dashboard{
+    display:flex;
+    min-height:100vh;
+}
+
+/* ================= SIDEBAR ================= */
+
+.sidebar{
+    width:270px;
+    background:linear-gradient(180deg,#0057ff,#1ea1ff);
+    padding:25px 20px;
+    color:#fff;
+    position:fixed;
+    height:100%;
+    overflow-y:auto;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin-bottom:35px;
+}
+
+.logo-box{
+    width:55px;
+    height:55px;
+    border-radius:18px;
+    background:rgba(255,255,255,.2);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+}
+
+.logo h2{
+    font-size:26px;
+}
+
+.logo p{
+    font-size:12px;
+    opacity:.8;
+}
+
+.menu{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.menu a{
+    text-decoration:none;
+    color:#fff;
+    padding:15px 18px;
+    border-radius:16px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    transition:.3s;
+    font-size:15px;
+}
+
+.menu a:hover,
+.menu .active{
+    background:rgba(255,255,255,.2);
+}
+
+/* ================= MAIN CONTENT ================= */
+.main {
+    margin-left: 270px;
+    width: calc(100% - 270px);
+    padding: 25px;
+}
+
+/* ================= TOPBAR ================= */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+}
+
+.search-box {
+    flex: 1;
+    max-width: 500px;
+    background: #fff;
+    height: 58px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    gap: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.05);
+}
+
+.search-box input {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 15px;
+}
+
+.top-icons {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.icon-box {
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    position: relative;
+    box-shadow: 0 5px 20px rgba(0,0,0,.05);
+    transition: .4s;
+}
+
+.badge {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: red;
+    color: #fff;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile {
+    background: #fff;
+    padding: 10px 16px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.05);
+    transition: .4s;
+}
+
+.profile img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.profile h4 { font-size: 15px; }
+.profile p { font-size: 12px; color: #666; }
+
+/* Hover animations for standard items */
+.icon-box:hover, .profile:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 15px 30px rgba(0,0,0,.08);
+}
+
+
+/* ================= UNIQUE LIBRARY UI STYLES ================= */
+
+/* Library Stats Grid */
+.lib-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.lib-stat-card {
+    background: #fff;
+    border-radius: 24px;
+    padding: 22px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.05);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: .4s;
+}
+
+.lib-stat-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 15px 30px rgba(0,0,0,.08);
+}
+
+.lib-stat-info h2 {
+    font-size: 28px;
+    color: #0a5bff;
+}
+
+.lib-stat-info p {
+    color: #666;
+    font-size: 14px;
+    margin-top: 2px;
+}
+
+.lib-stat-icon {
+    width: 55px;
+    height: 55px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+}
+.bg-blue { background: #e9f1ff; color: #0a5bff; }
+.bg-green { background: #e8fff0; color: #17b05c; }
+.bg-orange { background: #fff4df; color: #ff9800; }
+.bg-purple { background: #f3e5f5; color: #9c27b0; }
+
+/* Main Library Explorer Card */
+.library-container {
+    background: #fff;
+    border-radius: 24px;
+    padding: 25px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.05);
+    margin-bottom: 25px;
+}
+
+.library-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #f0f4ff;
+    padding-bottom: 20px;
+}
+
+.library-title h3 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #111;
+}
+
+.library-title p {
+    font-size: 13px;
+    color: #666;
+    margin-top: 3px;
+}
+
+/* Category Filter Tabs */
+.filter-tabs {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    border: none;
+    outline: none;
+    background: #f0f4ff;
+    color: #4a77ff;
+    padding: 8px 18px;
+    border-radius: 12px;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.tab-btn.active, .tab-btn:hover {
+    background: #0a5bff;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(10, 91, 255, 0.2);
+}
+
+/* Digital Books Cards Grid */
+.books-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.book-card {
+    background: #fff;
+    border: 1px solid #edf2ff;
+    border-radius: 20px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 3px 10px rgba(0,0,0,.01);
+    transition: .4s ease;
+}
+
+.book-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 15px 30px rgba(0,0,0,.08);
+    border-color: #cbdcff;
+}
+
+.book-top {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.book-cover {
+    width: 85px;
+    height: 115px;
+    border-radius: 10px;
+    background: #eaeaff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    color: #0a5bff;
+    box-shadow: 0 4px 10px rgba(0,0,0,.05);
+    object-fit: cover;
+}
+
+.book-meta {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.book-meta h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #222;
+    line-height: 1.3;
+    margin-bottom: 4px;
+}
+
+.book-meta p {
+    font-size: 12px;
+    color: #777;
+    margin-bottom: 8px;
+}
+
+/* Status Labels */
+.stock-status {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 6px;
+    width: fit-content;
+}
+.status-in { background: #e8fff0; color: #17b05c; }
+.status-out { background: #fff4df; color: #ff9800; }
+
+.book-bottom-actions {
+    border-top: 1px dashed #e4ecff;
+    padding-top: 12px;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.book-shelf {
+    font-size: 11px;
+    color: #666;
+}
+.book-shelf i { color: #0a5bff; margin-right: 4px; }
+
+.action-lib-btn {
+    border: none;
+    outline: none;
+    background: #0a5bff;
+    color: #fff;
+    padding: 7px 14px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.action-lib-btn:hover {
+    background: #0046cd;
+}
+
+.action-lib-btn.secondary-btn {
+    background: #f0f4ff;
+    color: #0a5bff;
+}
+.action-lib-btn.secondary-btn:hover {
+    background: #e0e9ff;
+}
+
+/* Issued Books History Section Table */
+.history-section {
+    background: #fff;
+    border-radius: 24px;
+    padding: 25px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.05);
+}
+
+.history-section h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #111;
+}
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.lib-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    min-width: 600px;
+}
+
+.lib-table th {
+    background: #f8faff;
+    color: #666;
+    padding: 14px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    border-bottom: 1px solid #edf2ff;
+}
+
+.lib-table td {
+    padding: 16px;
+    font-size: 14px;
+    color: #333;
+    border-bottom: 1px solid #edf2ff;
+}
+
+.lib-table tr:last-child td {
+    border-bottom: none;
+}
+
+.badge-pill {
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+}
+.badge-returned { background: #e8fff0; color: #17b05c; }
+.badge-pending { background: #fff4df; color: #ff9800; }
+
+/* ================= COMPREHENSIVE RESPONSIVENESS ================= */
+@media(max-width:1400px) {
+    .lib-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media(max-width:900px) {
+    .sidebar{
+        position:relative;
+        width:100%;
+        height:auto;
+    }
+
+    .dashboard{
+        flex-direction:column;
+    }
+
+    .main {
+        margin-left: 0;
+        width: 100%;
+        padding: 15px;
+    }
+
+    .library-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .filter-tabs {
+        width: 100%;
+    }
+    
+    .tab-btn {
+        flex: 1;
+        text-align: center;
+        font-size: 13px;
+    }
+}
+
+@media(max-width: 550px) {
+    .lib-stats-grid {
+        grid-template-columns: 1fr;
+    }
+    .books-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <aside class="sidebar">
+        <div class="logo">
+            <div class="logo-box">
+                <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+            <div>
+                <h2>EduSmart</h2>
+                <p>School Management</p>
+            </div>
+        </div>
+
+        <div class="menu">
+            <a href="Student_DashBoard.html"><i class="fa-solid fa-house"></i> Dashboard</a>
+            <a href="Attendence.html"><i class="fa-solid fa-calendar-check"></i> Attendance</a>
+            <a href="Homework.html"><i class="fa-solid fa-book"></i> Homework</a>
+            <a href="Exams.html"><i class="fa-solid fa-file-lines"></i> Exams</a>
+            <a href="Fees.html"><i class="fa-solid fa-money-bill"></i> Fees</a>
+            <a href="Timetable.html"><i class="fa-solid fa-calendar"></i> Timetable</a>
+            <a href="Online_Classes.html"><i class="fa-solid fa-video"></i> Online Classes</a>
+            <a href="Library.html" class="active"><i class="fa-solid fa-book-open"></i> Library</a>
+            <a href="Downloads.html"><i class="fa-solid fa-download"></i> Downloads</a>
+            <a href="Settings.html"><i class="fa-solid fa-gear"></i> Settings</a>
+        </div>
+    </aside>
+
+    <main class="main">
+
+        <div class="topbar">
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="librarySearchInput" placeholder="Search books by title, author, or keywords..." onkeyup="searchBooks()">
+            </div>
+
+            <div class="top-icons">
+                <div class="icon-box">
+                    <i class="fa-regular fa-bell"></i>
+                    <div class="badge">5</div>
+                </div>
+                <div class="profile">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile Image">
+                    <div>
+                        <h4>Alex Johnson</h4>
+                        <p>Grade 10 - A</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="lib-stats-grid">
+            <div class="lib-stat-card">
+                <div class="lib-stat-info">
+                    <h2>2</h2>
+                    <p>Books Issued</p>
+                </div>
+                <div class="lib-stat-icon bg-blue">
+                    <i class="fa-solid fa-book"></i>
+                </div>
+            </div>
+
+            <div class="lib-stat-card">
+                <div class="lib-stat-info">
+                    <h2>14 Days</h2>
+                    <p>Next Due Date</p>
+                </div>
+                <div class="lib-stat-icon bg-orange">
+                    <i class="fa-solid fa-hourglass-half"></i>
+                </div>
+            </div>
+
+            <div class="lib-stat-card">
+                <div class="lib-stat-info">
+                    <h2>$0.00</h2>
+                    <p>Pending Fine</p>
+                </div>
+                <div class="lib-stat-icon bg-green">
+                    <i class="fa-solid fa-circle-dollar-to-slot"></i>
+                </div>
+            </div>
+
+            <div class="lib-stat-card">
+                <div class="lib-stat-info">
+                    <h2>12</h2>
+                    <p>Saved E-Books</p>
+                </div>
+                <div class="lib-stat-icon bg-purple">
+                    <i class="fa-solid fa-bookmark"></i>
+                </div>
+            </div>
+        </section>
+
+        <section class="library-container">
+            <div class="library-header">
+                <div class="library-title">
+                    <h3>Digital Library Catalog</h3>
+                    <p>Browse available reference materials, textbooks, and online digital publications.</p>
+                </div>
+                
+                <div class="filter-tabs">
+                    <button class="tab-btn active" onclick="filterCategory('all', this)">All Books</button>
+                    <button class="tab-btn" onclick="filterCategory('mathematics', this)">Mathematics</button>
+                    <button class="tab-btn" onclick="filterCategory('physics', this)">Physics</button>
+                    <button class="tab-btn" onclick="filterCategory('chemistry', this)">Chemistry</button>
+                    <button class="tab-btn" onclick="filterCategory('literature', this)">Literature</button>
+                </div>
+            </div>
+
+            <div class="books-grid" id="booksCatalogGrid">
+                </div>
+        </section>
+
+        <section class="history-section">
+            <h3>Issued Books & Tracking Status</h3>
+            
+            <div class="table-wrapper">
+                <table class="lib-table">
+                    <thead>
+                        <tr>
+                            <th>Book ID</th>
+                            <th>Book Title</th>
+                            <th>Issue Date</th>
+                            <th>Due Date</th>
+                            <th>Return Status</th>
+                            <th>Action / Note</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#BK-9042</td>
+                            <td><strong>Fundamentals of Physics Extended</strong></td>
+                            <td>10 May 2026</td>
+                            <td>24 May 2026</td>
+                            <td><span class="badge-pill badge-pending">Pending Return</span></td>
+                            <td><button class="action-lib-btn secondary-btn" onclick="alert('Renew request submitted successfully!')">Request Renewal</button></td>
+                        </tr>
+                        <tr>
+                            <td>#BK-3112</td>
+                            <td><strong>Advanced Calculus & Functions</strong></td>
+                            <td>01 May 2026</td>
+                            <td>15 May 2026</td>
+                            <td><span class="badge-pill badge-returned">Returned</span></td>
+                            <td><small style="color: #888;">On Time (No Fine)</small></td>
+                        </tr>
+                        <tr>
+                            <td>#BK-5521</td>
+                            <td><strong>Organic Chemistry Structures Vol. 1</strong></td>
+                            <td>12 Apr 2026</td>
+                            <td>26 Apr 2026</td>
+                            <td><span class="badge-pill badge-returned">Returned</span></td>
+                            <td><small style="color: #888;">On Time (No Fine)</small></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<script>
+    // Library Data Repository JSON Structure
+    const libraryBooksData = [
+        {
+            id: 1,
+            title: "Calculus Concepts & Analytical Geometry",
+            author: "Dr. S.K. Mishra",
+            category: "mathematics",
+            inStock: true,
+            shelf: "Shelf A - Column 2",
+            type: "physical",
+            icon: "fa-calculator"
+        },
+        {
+            id: 2,
+            title: "Quantum Mechanics & Wave Theory",
+            author: "Prof. Richard Feynman",
+            category: "physics",
+            inStock: true,
+            shelf: "E-Library Resource",
+            type: "digital",
+            icon: "fa-atom"
+        },
+        {
+            id: 3,
+            title: "Comprehensive Inorganic Chemistry",
+            author: "J.D. Lee",
+            category: "chemistry",
+            inStock: false,
+            shelf: "Shelf C - Column 4",
+            type: "physical",
+            icon: "fa-flask-vial"
+        },
+        {
+            id: 4,
+            title: "Shakespearean Dramas & Critical Analysis",
+            author: "William Shakespeare",
+            category: "literature",
+            inStock: true,
+            shelf: "Shelf F - Column 1",
+            type: "physical",
+            icon: "fa-book-open-reader"
+        },
+        {
+            id: 5,
+            title: "Differential Equations & Vectors",
+            author: "Erwin Kreyszig",
+            category: "mathematics",
+            inStock: true,
+            shelf: "E-Library Resource",
+            type: "digital",
+            icon: "fa-square-root-variable"
+        },
+        {
+            id: 6,
+            title: "Optics & Light Spectroscopy",
+            author: "Dr. H.C. Verma",
+            category: "physics",
+            inStock: true,
+            shelf: "Shelf B - Column 3",
+            type: "physical",
+            icon: "fa-lightbulb"
+        }
+    ];
+
+    // Function to draw Catalog items inside grid
+    function renderLibraryGrid(books) {
+        const gridContainer = document.getElementById('booksCatalogGrid');
+        gridContainer.innerHTML = '';
+
+        if (books.length === 0) {
+            gridContainer.innerHTML = `
+                <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #888;">
+                    <i class="fa-solid fa-book-bookmark" style="font-size: 45px; margin-bottom: 12px; color: #ccc;"></i>
+                    <p>No matching books or resources found in this category.</p>
+                </div>`;
+            return;
+        }
+
+        books.forEach(book => {
+            // Check status tags
+            let statusTag = '';
+            let actionButton = '';
+
+            if (book.type === 'digital') {
+                statusTag = `<span class="stock-status status-in"><i class="fa-solid fa-cloud"></i> Digital E-Book</span>`;
+                actionButton = `<button class="action-lib-btn" onclick="openEbook('${book.title}')"><i class="fa-solid fa-file-pdf"></i> Read E-Book</button>`;
+            } else {
+                if (book.inStock) {
+                    statusTag = `<span class="stock-status status-in">In Stock</span>`;
+                    actionButton = `<button class="action-lib-btn secondary-btn" onclick="reserveBook('${book.title}')">Reserve Copy</button>`;
+                } else {
+                    statusTag = `<span class="stock-status status-out">Out of Stock</span>`;
+                    actionButton = `<button class="action-lib-btn" style="background:#e0e6f5; color:#a0aabf; cursor:not-allowed;" disabled>Notify Me</button>`;
+                }
+            }
+
+            const bookCard = document.createElement('div');
+            bookCard.className = 'book-card';
+            bookCard.innerHTML = `
+                <div class="book-top">
+                    <div class="book-cover">
+                        <i class="fa-solid ${book.icon}"></i>
+                    </div>
+                    <div class="book-meta">
+                        <h4>${book.title}</h4>
+                        <p>By ${book.author}</p>
+                        ${statusTag}
+                    </div>
+                </div>
+                <div class="book-bottom-actions">
+                    <span class="book-shelf"><i class="fa-solid fa-location-dot"></i> ${book.shelf}</span>
+                    ${actionButton}
+                </div>
+            `;
+            gridContainer.appendChild(bookCard);
+        });
+    }
+
+    // Interactive Action Triggers
+    function openEbook(title) {
+        alert(`Opening Digital PDF Viewer for: "${title}"`);
+    }
+
+    function reserveBook(title) {
+        alert(`Success! "${title}" has been reserved for you. Please collect it from the counter within 24 hours.`);
+    }
+
+    // Dynamic Filter Trigger Logic
+    function filterCategory(category, element) {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        element.classList.add('active');
+
+        if (category === 'all') {
+            renderLibraryGrid(libraryBooksData);
+        } else {
+            const filtered = libraryBooksData.filter(b => b.category === category);
+            renderLibraryGrid(filtered);
+        }
+    }
+
+    // Real-time Live Input Search Filter
+    function searchBooks() {
+        const query = document.getElementById('librarySearchInput').value.toLowerCase();
+        
+        // Reset category tab active styles to "All Books" during live searching
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelector('.tab-btn[onclick*="all"]').classList.add('active');
+
+        const searchResults = libraryBooksData.filter(book => {
+            return book.title.toLowerCase().includes(query) || 
+                   book.author.toLowerCase().includes(query) || 
+                   book.category.toLowerCase().includes(query);
+        });
+        renderLibraryGrid(searchResults);
+    }
+
+    // Run when Document Object Model loaded
+    window.addEventListener('DOMContentLoaded', () => {
+        renderLibraryGrid(libraryBooksData);
+    });
+</script>
+
+</body>
+</html>

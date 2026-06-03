@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Attendance Dashboard</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <style>
+        /* ================= BASE STYLES ================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #f4f7ff;
+            overflow-x: hidden;
+        }
+
+        /* ================= LAYOUT ================= */
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 270px;
+            background: linear-gradient(180deg, #0057ff, #1ea1ff);
+            padding: 25px 20px;
+            color: #fff;
+            position: fixed;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .main {
+            margin-left: 270px;
+            width: calc(100% - 270px);
+            padding: 25px;
+        }
+
+        /* ================= SIDEBAR ================= */
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 35px;
+        }
+
+        .logo-box {
+            width: 55px;
+            height: 55px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, .2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .logo h2 {
+            font-size: 26px;
+        }
+
+        .logo p {
+            font-size: 12px;
+            opacity: .8;
+        }
+
+        .menu {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .menu a {
+            text-decoration: none;
+            color: #fff;
+            padding: 15px 18px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: .3s;
+            font-size: 15px;
+        }
+
+        .menu a:hover,
+        .menu .active {
+            background: rgba(255, 255, 255, .2);
+        }
+
+        /* ================= TOPBAR ================= */
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+        }
+
+        .search-box {
+            flex: 1;
+            max-width: 500px;
+            background: #fff;
+            height: 58px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            gap: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, .05);
+        }
+
+        .search-box input {
+            border: none;
+            outline: none;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        .top-icons {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .icon-box {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            position: relative;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, .05);
+            transition: .4s;
+            cursor: pointer;
+        }
+
+        .icon-box:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, .08);
+        }
+
+        .badge {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: red;
+            color: #fff;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile {
+            background: #fff;
+            padding: 10px 16px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, .05);
+            transition: .4s;
+            cursor: pointer;
+        }
+
+        .profile:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, .08);
+        }
+
+        .profile img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* ================= COMMON CARDS ================= */
+        .card {
+            background: #fff;
+            border-radius: 24px;
+            padding: 22px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, .05);
+            transition: .4s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, .08);
+        }
+
+        .card h3 {
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 18px;
+        }
+
+        /* ================= ATTENDANCE STATS GRID ================= */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .stat-info h2 {
+            font-size: 24px;
+            color: #333;
+        }
+
+        .stat-info p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* Status Colors */
+        .bg-blue {
+            background: #e9f1ff;
+            color: #0a5bff;
+        }
+
+        .bg-green {
+            background: #e8fff0;
+            color: #17b05c;
+        }
+
+        .bg-red {
+            background: #ffeaea;
+            color: #ff3b3b;
+        }
+
+        .bg-orange {
+            background: #fff4df;
+            color: #ff9800;
+        }
+
+        /* ================= MIDDLE GRID (CALENDAR & LOGS) ================= */
+        .attendance-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        /* Calendar Styles */
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .calendar-header h3 {
+            margin-bottom: 0;
+            font-size: 20px;
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .calendar-nav button {
+            border: none;
+            background: #f4f7ff;
+            width: 35px;
+            height: 35px;
+            border-radius: 10px;
+            cursor: pointer;
+            color: #0a5bff;
+            font-size: 16px;
+            transition: .3s;
+        }
+
+        .calendar-nav button:hover {
+            background: #0a5bff;
+            color: #fff;
+        }
+
+        .weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            font-weight: 600;
+            color: #888;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            text-align: center;
+        }
+
+        .days div {
+            padding: 12px;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: .3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            height: 65px;
+        }
+
+        .days div:not(.empty):hover {
+            transform: scale(1.05);
+        }
+
+        /* Day Statuses */
+        .day-present {
+            background: #e8fff0;
+            color: #17b05c;
+            border: 1px solid rgba(23, 176, 92, 0.2);
+        }
+
+        .day-absent {
+            background: #ffeaea;
+            color: #ff3b3b;
+            border: 1px solid rgba(255, 59, 59, 0.2);
+        }
+
+        .day-late {
+            background: #fff4df;
+            color: #ff9800;
+            border: 1px solid rgba(255, 152, 0, 0.2);
+        }
+
+        .day-holiday {
+            background: #f5f5f5;
+            color: #999;
+            border: 1px dashed #ccc;
+        }
+
+        .day-empty {
+            background: transparent;
+            pointer-events: none;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        .dot-green {
+            background: #17b05c;
+        }
+
+        .dot-red {
+            background: #ff3b3b;
+        }
+
+        .dot-orange {
+            background: #ff9800;
+        }
+
+        .calendar-legend {
+            display: flex;
+            gap: 20px;
+            margin-top: 25px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 4px;
+        }
+
+        /* Logs Styles */
+        .logs-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .logs-header h3 {
+            margin-bottom: 0;
+        }
+
+        .logs-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-height: 380px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .logs-list::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .logs-list::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 10px;
+        }
+
+        .log-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .log-date {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .log-date strong {
+            color: #333;
+            font-size: 15px;
+        }
+
+        .log-date span {
+            color: #888;
+            font-size: 12px;
+        }
+
+        .badge-status {
+            padding: 6px 14px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* ================= BOTTOM GRID (SUBJECTS & LEAVE) ================= */
+        .bottom-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        /* Progress Bars */
+        .progress-item {
+            margin-bottom: 18px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #444;
+        }
+
+        .progress {
+            width: 100%;
+            height: 10px;
+            background: #edf2ff;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .fill {
+            height: 100%;
+            border-radius: 20px;
+        }
+
+        .blue-fill {
+            background: #0a5bff;
+        }
+
+        .green-fill {
+            background: #17b05c;
+        }
+
+        .orange-fill {
+            background: #ff9800;
+        }
+
+        /* Leave Form */
+        .leave-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            color: #555;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 12px 15px;
+            border-radius: 12px;
+            border: 1px solid #ddd;
+            outline: none;
+            font-size: 14px;
+            background: #f9f9f9;
+            transition: .3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #0a5bff;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(10, 91, 255, 0.1);
+        }
+
+        .btn-submit {
+            background: #0a5bff;
+            color: #fff;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: .3s;
+            margin-top: 5px;
+        }
+
+        .btn-submit:hover {
+            background: #0043c9;
+            box-shadow: 0 5px 15px rgba(10, 91, 255, 0.2);
+        }
+
+        /* ================= RESPONSIVE ================= */
+        @media(max-width:1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media(max-width:900px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .dashboard {
+                flex-direction: column;
+            }
+
+            .main {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .attendance-grid,
+            .bottom-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .days div {
+                height: 55px;
+                padding: 8px;
+            }
+        }
+
+        @media(max-width:600px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .days {
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="dashboard">
+
+        <aside class="sidebar">
+            <div class="logo">
+                <div class="logo-box"><i class="fa-solid fa-graduation-cap"></i></div>
+                <div>
+                    <h2>EduSmart</h2>
+                    <p>School Management</p>
+                </div>
+            </div>
+            <div class="menu">
+                <a href="Student_DashBoard.html"><i class="fa-solid fa-house"></i> Dashboard</a>
+                <a href="Attendence.html" class="active"><i class="fa-solid fa-calendar-check"></i> Attendance</a>
+                <a href="Homework.html"><i class="fa-solid fa-book"></i> Homework</a>
+                <a href="Exams.html"><i class="fa-solid fa-file-lines"></i> Exams</a>
+                <a href="Fees.html"><i class="fa-solid fa-money-bill"></i> Fees</a>
+                <a href="Timetable.html"><i class="fa-solid fa-calendar"></i> Timetable</a>
+                <a href="Online_Classes.html"><i class="fa-solid fa-video"></i>Online Classes</a>
+                <a href="Library.html"><i class="fa-solid fa-book-open"></i>Library</a>
+                <a href="Downloads.html"><i class="fa-solid fa-download"></i>Downloads</a>
+                <a href="Settings.html"><i class="fa-solid fa-gear"></i> Settings</a>
+            </div>
+        </aside>
+
+        <main class="main">
+
+            <div class="topbar">
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Search attendance records...">
+                </div>
+                <div class="top-icons">
+                    <div class="icon-box">
+                        <i class="fa-regular fa-bell"></i>
+                        <div class="badge">2</div>
+                    </div>
+                    <div class="profile">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Profile">
+                        <div>
+                            <h4>Sanaya</h4>
+                            <p>B.tech 2nd Year • RGPV Univ.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <section class="stats-grid">
+                <div class="card stat-card">
+                    <div class="stat-icon bg-blue"><i class="fa-solid fa-chart-pie"></i></div>
+                    <div class="stat-info">
+                        <h2>92%</h2>
+                        <p>Overall Attendance</p>
+                    </div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-icon bg-green"><i class="fa-solid fa-user-check"></i></div>
+                    <div class="stat-info">
+                        <h2>142</h2>
+                        <p>Total Days Present</p>
+                    </div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-icon bg-red"><i class="fa-solid fa-user-xmark"></i></div>
+                    <div class="stat-info">
+                        <h2>10</h2>
+                        <p>Total Days Absent</p>
+                    </div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-icon bg-orange"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                    <div class="stat-info">
+                        <h2>4</h2>
+                        <p>Days Late</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="attendance-grid">
+
+                <div class="card">
+                    <div class="calendar-header">
+                        <h3 id="month-year">May 2026</h3>
+                        <div class="calendar-nav">
+                            <button onclick="changeMonth(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+                            <button onclick="changeMonth(1)" ><i class="fa-solid fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="weekdays">
+                        <div>Sun</div>
+                        <div>Mon</div>
+                        <div>Tue</div>
+                        <div>Wed</div>
+                        <div>Thu</div>
+                        <div>Fri</div>
+                        <div>Sat</div>
+                    </div>
+
+                    <div class="days" id="calendar-days">
+                    </div>
+
+                    <div class="calendar-legend">
+                        <div class="legend-item">
+                            <div class="legend-color bg-green"></div> Present
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color bg-red"></div> Absent
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color bg-orange"></div> Late
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background:#f5f5f5; border:1px dashed #ccc;"></div> Holiday
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="logs-header">
+                        <h3>Recent History</h3>
+                        <i class="fa-solid fa-ellipsis-vertical" style="color:#888; cursor:pointer;"></i>
+                    </div>
+
+                    <div class="logs-list">
+                        <div class="log-item">
+                            <div class="log-date">
+                                <strong>15 May, 2026</strong>
+                                <span>Friday • 09:10 AM</span>
+                            </div>
+                            <div class="badge-status bg-orange">Late</div>
+                        </div>
+                        <div class="log-item">
+                            <div class="log-date">
+                                <strong>14 May, 2026</strong>
+                                <span>Thursday • 08:50 AM</span>
+                            </div>
+                            <div class="badge-status bg-green">Present</div>
+                        </div>
+                        <div class="log-item">
+                            <div class="log-date">
+                                <strong>13 May, 2026</strong>
+                                <span>Wednesday • 08:45 AM</span>
+                            </div>
+                            <div class="badge-status bg-green">Present</div>
+                        </div>
+                        <div class="log-item">
+                            <div class="log-date">
+                                <strong>12 May, 2026</strong>
+                                <span>Tuesday</span>
+                            </div>
+                            <div class="badge-status bg-red">Absent</div>
+                        </div>
+                        <div class="log-item">
+                            <div class="log-date">
+                                <strong>11 May, 2026</strong>
+                                <span>Monday • 08:55 AM</span>
+                            </div>
+                            <div class="badge-status bg-green">Present</div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+            <section class="bottom-grid">
+
+                <div class="card">
+                    <h3>Subject-wise Attendance</h3>
+                    <br>
+
+                    <div class="progress-item">
+                        <div class="progress-header">
+                            <span>Mathematics (Calculus)</span>
+                            <strong>85%</strong>
+                        </div>
+                        <div class="progress">
+                            <div class="fill blue-fill" style="width:85%"></div>
+                        </div>
+                    </div>
+
+                    <div class="progress-item">
+                        <div class="progress-header">
+                            <span>Physics (Optics & Lab)</span>
+                            <strong>92%</strong>
+                        </div>
+                        <div class="progress">
+                            <div class="fill green-fill" style="width:92%"></div>
+                        </div>
+                    </div>
+
+                    <div class="progress-item">
+                        <div class="progress-header">
+                            <span>Organic Chemistry</span>
+                            <strong>78%</strong>
+                        </div>
+                        <div class="progress">
+                            <div class="fill orange-fill" style="width:78%"></div>
+                        </div>
+                    </div>
+
+                    <div class="progress-item">
+                        <div class="progress-header">
+                            <span>Computer Basics</span>
+                            <strong>95%</strong>
+                        </div>
+                        <div class="progress">
+                            <div class="fill blue-fill" style="width:95%; background:#9c27b0;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Apply for Leave</h3>
+                    <br>
+                    <form class="leave-form">
+                        <div class="form-group">
+                            <label>Leave Type</label>
+                            <select>
+                                <option>Sick Leave (बीमारी)</option>
+                                <option>Urgent Work (जरूरी काम)</option>
+                                <option>Family Event (पारिवारिक कार्यक्रम)</option>
+                                <option>Other (अन्य)</option>
+                            </select>
+                        </div>
+
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
+                            <div class="form-group">
+                                <label>From Date</label>
+                                <input type="date">
+                            </div>
+                            <div class="form-group">
+                                <label>To Date</label>
+                                <input type="date">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Reason (कारण)</label>
+                            <textarea rows="2" placeholder="छुट्टी का कारण यहाँ लिखें..."></textarea>
+                        </div>
+
+                        <button type="button" class="btn-submit">Submit Request</button>
+                    </form>
+                </div>
+
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        // Calendar Generation Script
+        const calendarDays = document.getElementById('calendar-days');
+        const monthYear = document.getElementById('month-year');
+
+        let currentDate = new Date(2026, 4, 1); // Starting at May 2026
+
+        function renderCalendar() {
+            calendarDays.innerHTML = '';
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            monthYear.innerText = `${monthNames[month]} ${year}`;
+
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            // Empty slots before first day
+            for (let i = 0; i < firstDay; i++) {
+                const emptyDiv = document.createElement('div');
+                emptyDiv.classList.add('day-empty');
+                calendarDays.appendChild(emptyDiv);
+            }
+
+            // Populate days
+            for (let i = 1; i <= daysInMonth; i++) {
+                const dayDiv = document.createElement('div');
+                dayDiv.innerText = i;
+
+                // Randomly assign statuses to show the theme layout beautifully
+                const random = Math.random();
+                const currentDayOfWeek = new Date(year, month, i).getDay();
+
+                if (currentDayOfWeek === 0) {
+                    // Sunday = Holiday
+                    dayDiv.classList.add('day-holiday');
+                } else if (random > 0.85) {
+                    dayDiv.classList.add('day-absent');
+                    dayDiv.innerHTML += `<div class="status-dot dot-red"></div>`;
+                } else if (random > 0.75) {
+                    dayDiv.classList.add('day-late');
+                    dayDiv.innerHTML += `<div class="status-dot dot-orange"></div>`;
+                } else {
+                    dayDiv.classList.add('day-present');
+                    dayDiv.innerHTML += `<div class="status-dot dot-green"></div>`;
+                }
+
+                calendarDays.appendChild(dayDiv);
+            }
+        }
+
+        function changeMonth(direction) {
+            currentDate.setMonth(currentDate.getMonth() + direction);
+            renderCalendar();
+        }
+
+        // Initialize
+        renderCalendar();
+    </script>
+
+</body>
+
+</html>

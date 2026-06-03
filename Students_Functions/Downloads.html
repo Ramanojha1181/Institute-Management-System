@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Dashboard - Advanced Downloads</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+<style>
+/* ================= GLOBAL STYLES ================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: #f4f7ff;
+    overflow-x: hidden;
+    color: #333;
+}
+
+/* ================= DASHBOARD LAYOUT ================= */
+.dashboard {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ================= SIDEBAR ================= */
+.sidebar {
+    width: 270px;
+    background: linear-gradient(180deg, #0057ff, #1ea1ff);
+    padding: 25px 20px;
+    color: #fff;
+    position: fixed;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 35px;
+}
+
+.logo-box {
+    width: 55px;
+    height: 55px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, .2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.logo h2 { font-size: 26px; }
+.logo p { font-size: 12px; opacity: .8; }
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.menu a {
+    text-decoration: none;
+    color: #fff;
+    padding: 15px 18px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: .3s;
+    font-size: 15px;
+}
+
+.menu a:hover, 
+.menu .active {
+    background: rgba(255, 255, 255, .2);
+}
+
+/* ================= MAIN CONTENT ================= */
+.main {
+    margin-left: 270px;
+    width: calc(100% - 270px);
+    padding: 25px;
+}
+
+/* ================= TOPBAR ================= */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+}
+
+.search-box {
+    flex: 1;
+    max-width: 500px;
+    background: #fff;
+    height: 58px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    gap: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.05);
+}
+
+.search-box input {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 15px;
+}
+
+.top-icons {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.icon-box {
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    position: relative;
+    box-shadow: 0 5px 20px rgba(0,0,0,.05);
+    transition: .4s;
+}
+
+.badge {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: red;
+    color: #fff;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile {
+    background: #fff;
+    padding: 10px 16px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.05);
+    transition: .4s;
+}
+
+.profile img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.profile h4 { font-size: 15px; }
+.profile p { font-size: 12px; color: #666; }
+
+.icon-box:hover, .profile:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 15px 30px rgba(0,0,0,.08);
+}
+
+
+/* ================= ADVANCED DOWNLOADS MASTER UI ================= */
+.dl-container {
+    background: #fff;
+    border-radius: 24px;
+    padding: 25px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.05);
+    margin-bottom: 25px;
+}
+
+.dl-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    border-bottom: 2px solid #f0f4ff;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+}
+
+.dl-title h3 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #111;
+}
+
+.dl-title p {
+    font-size: 13px;
+    color: #666;
+    margin-top: 3px;
+}
+
+.filter-tabs {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    border: none;
+    outline: none;
+    background: #f0f4ff;
+    color: #4a77ff;
+    padding: 10px 20px;
+    border-radius: 14px;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tab-btn.active, .tab-btn:hover {
+    background: #0a5bff;
+    color: #fff;
+    box-shadow: 0 6px 15px rgba(10, 91, 255, 0.2);
+}
+
+/* Subsection Section Titles */
+.sub-section-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #444;
+    margin: 15px 0 15px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sub-section-title i {
+    color: #0a5bff;
+}
+
+/* Grids Layout */
+.dl-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+    margin-bottom: 35px;
+}
+
+/* Base Document Card Structure */
+.dl-card {
+    background: #fff;
+    border: 1px solid #edf2ff;
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    transition: .4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dl-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0,0,0,.06);
+    border-color: #cbdcff;
+}
+
+.dl-top {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+/* Custom Icon Type Badges */
+.file-icon-box {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+}
+.pdf-bg { background: #ffebee; color: #e53935; }
+.zip-bg { background: #e8f5e9; color: #43a047; }
+.doc-bg { background: #e3f2fd; color: #1e88e5; }
+
+.file-info h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #222;
+    line-height: 1.4;
+    margin-bottom: 4px;
+}
+
+.file-meta {
+    display: flex;
+    gap: 12px;
+    font-size: 11px;
+    color: #777;
+}
+
+.file-meta span i {
+    margin-right: 4px;
+    color: #0a5bff;
+}
+
+/* Progress Mechanism Area */
+.download-progress-container {
+    margin-top: 15px;
+    display: none;
+}
+
+.progress-text-wrapper {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #666;
+    margin-bottom: 4px;
+}
+
+.dl-progress-bar {
+    width: 100%;
+    height: 6px;
+    background: #edf2ff;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.dl-progress-fill {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #0057ff, #1ea1ff);
+    border-radius: 10px;
+}
+
+/* Card Action Floor */
+.dl-action-area {
+    margin-top: 15px;
+    padding-top: 12px;
+    border-top: 1px dashed #e4ecff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tag-label {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 8px;
+    text-transform: uppercase;
+}
+.tag-assignment { background: #e8fff0; color: #17b05c; }
+.tag-paper { background: #fff4df; color: #ff9800; }
+.tag-material { background: #f3e5f5; color: #9c27b0; }
+.tag-syllabus { background: #e9f1ff; color: #0a5bff; }
+
+.btn-download {
+    border: none;
+    outline: none;
+    background: #0a5bff;
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: 0.3s;
+}
+
+.btn-download:hover {
+    background: #0046cd;
+}
+
+/* Previous Completed Downloads Styling */
+.btn-re-download {
+    background: #f0f4ff;
+    color: #0a5bff;
+}
+.btn-re-download:hover {
+    background: #e0e9ff;
+}
+
+/* ================= DOWNLOAD HISTORY TABLE SECTION ================= */
+.history-section {
+    background: #fff;
+    border-radius: 24px;
+    padding: 25px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.05);
+}
+
+.history-title-area {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.history-title-area h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #111;
+}
+
+.btn-clear-history {
+    background: transparent;
+    border: 1px solid #ffccd2;
+    color: #e53935;
+    padding: 6px 14px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-clear-history:hover {
+    background: #ffebee;
+}
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    min-width: 650px;
+}
+
+.history-table th {
+    background: #f8faff;
+    color: #666;
+    padding: 14px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    border-bottom: 1px solid #edf2ff;
+}
+
+.history-table td {
+    padding: 15px 16px;
+    font-size: 13px;
+    color: #333;
+    border-bottom: 1px solid #edf2ff;
+}
+
+.history-table tr:last-child td {
+    border-bottom: none;
+}
+
+.status-indicator {
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.text-success { color: #17b05c; }
+
+/* ================= RESPONSIVENESS SYSTEM ================= */
+@media(max-width:900px) {
+    .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+    }
+    .dashboard {
+        flex-direction: column;
+    }
+    .main {
+        margin-left: 0;
+        width: 100%;
+        padding: 15px;
+    }
+    .dl-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .filter-tabs {
+        width: 100%;
+    }
+    .tab-btn {
+        flex: 1;
+        text-align: center;
+        font-size: 12px;
+    }
+}
+
+@media(max-width: 600px) {
+    .dl-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <aside class="sidebar">
+        <div class="logo">
+            <div class="logo-box">
+                <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+            <div>
+                <h2>EduSmart</h2>
+                <p>School Management</p>
+            </div>
+        </div>
+
+        <div class="menu">
+            <a href="Student_DashBoard.html"><i class="fa-solid fa-house"></i> Dashboard</a>
+            <a href="Attendence.html"><i class="fa-solid fa-calendar-check"></i> Attendance</a>
+            <a href="Homework.html"><i class="fa-solid fa-book"></i> Homework</a>
+            <a href="Exams.html"><i class="fa-solid fa-file-lines"></i> Exams</a>
+            <a href="Fees.html"><i class="fa-solid fa-money-bill"></i> Fees</a>
+            <a href="Timetable.html"><i class="fa-solid fa-calendar"></i> Timetable</a>
+            <a href="Online_Classes.html"><i class="fa-solid fa-video"></i>Online Classes</a>
+            <a href="Library.html"><i class="fa-solid fa-book-open"></i>Library</a>
+            <a href="Downloads.html" class="active"><i class="fa-solid fa-download"></i> Downloads</a>
+            <a href="Settings.html"><i class="fa-solid fa-gear"></i> Settings</a>
+        </div>
+    </aside>
+
+    <main class="main">
+
+        <div class="topbar">
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="dlSearchInput" placeholder="Search resources or history..." onkeyup="searchAllDownloads()">
+            </div>
+
+            <div class="top-icons">
+                <div class="icon-box">
+                    <i class="fa-regular fa-bell"></i>
+                    <div class="badge">5</div>
+                </div>
+                <div class="profile">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Student Profile">
+                    <div>
+                        <h4>Alex Johnson</h4>
+                        <p>Grade 10 - A</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="dl-container">
+            <div class="dl-header">
+                <div class="dl-title">
+                    <h3>Academic Downloads Hub</h3>
+                    <p>Acquire newly published sheets, exam papers, and review history logs instantly.</p>
+                </div>
+                
+                <div class="filter-tabs">
+                    <button class="tab-btn active" onclick="filterData('all', this)">All Files</button>
+                    <button class="tab-btn" onclick="filterData('assignment', this)">Assignments</button>
+                    <button class="tab-btn" onclick="filterData('paper', this)">Question Papers</button>
+                    <button class="tab-btn" onclick="filterData('material', this)">Study Material</button>
+                    <button class="tab-btn" onclick="filterData('syllabus', this)">Syllabus</button>
+                </div>
+            </div>
+
+            <div class="sub-section-title">
+                <i class="fa-solid fa-cloud-arrow-down"></i> New Resources Available For Download
+            </div>
+            <div class="dl-grid" id="availableGridSpace">
+                </div>
+
+            <div class="sub-section-title">
+                <i class="fa-solid fa-circle-check"></i> Previous Downloads (Local Storage)
+            </div>
+            <div class="dl-grid" id="previousGridSpace">
+                </div>
+        </section>
+
+        <section class="history-section">
+            <div class="history-title-area">
+                <h3><i class="fa-solid fa-clock-rotate-left" style="color: #0a5bff; margin-right: 6px;"></i> Download Activity History Logs</h3>
+                <button class="btn-clear-history" onclick="clearHistoryLogs()">Clear History Log</button>
+            </div>
+            
+            <div class="table-wrapper">
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>File Reference ID</th>
+                            <th>File Description Title</th>
+                            <th>Resource Tag</th>
+                            <th>File Storage Size</th>
+                            <th>Download Timestamp</th>
+                            <th>Action Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyTableBody">
+                        </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<script>
+    // Live Repositories
+    let availableResources = [
+        { id: 1, title: "Mathematics Mid-Term Assignment Questions", category: "assignment", fileSize: "2.4 MB", type: "pdf", dateAdded: "24 May 2026", icon: "fa-file-pdf pdf-bg" },
+        { id: 2, title: "Physics Complete Lab Manual & Formulas", category: "material", fileSize: "14.8 MB", type: "zip", dateAdded: "22 May 2026", icon: "fa-file-zipper zip-bg" },
+        { id: 3, title: "Chemistry Previous Year Question Paper (2025)", category: "paper", fileSize: "1.1 MB", type: "pdf", dateAdded: "20 May 2026", icon: "fa-file-pdf pdf-bg" }
+    ];
+
+    let previousDownloads = [
+        { id: 101, title: "English Literature Revised Syllabus - Grade 10", category: "syllabus", fileSize: "850 KB", type: "doc", dateAdded: "15 May 2026", icon: "fa-file-word doc-bg" },
+        { id: 102, title: "Biology Plant Cell Theory Diagram Sheets", category: "material", fileSize: "4.2 MB", type: "pdf", dateAdded: "12 May 2026", icon: "fa-file-pdf pdf-bg" }
+    ];
+
+    let downloadHistoryLogs = [
+        { id: "DLID-9921", title: "English Literature Revised Syllabus - Grade 10", category: "syllabus", size: "850 KB", time: "15 May 2026, 11:14 AM" },
+        { id: "DLID-7481", title: "Biology Plant Cell Theory Diagram Sheets", category: "material", size: "4.2 MB", time: "12 May 2026, 04:30 PM" }
+    ];
+
+    let currentCategoryFilter = 'all';
+
+    // Core Drawing UI Function
+    function populateUIGrids() {
+        renderAvailable(availableResources.filter(item => currentCategoryFilter === 'all' || item.category === currentCategoryFilter));
+        renderPrevious(previousDownloads.filter(item => currentCategoryFilter === 'all' || item.category === currentCategoryFilter));
+        renderHistoryLogs();
+    }
+
+    // Render Section A
+    function renderAvailable(items) {
+        const space = document.getElementById('availableGridSpace');
+        space.innerHTML = '';
+        if(items.length === 0) {
+            space.innerHTML = `<div style="grid-column:1/-1; color:#999; font-size:13px; text-align:center; padding:15px;">No new assets available in this category.</div>`;
+            return;
+        }
+        items.forEach(file => {
+            space.innerHTML += `
+                <div class="dl-card" id="card-av-${file.id}">
+                    <div class="dl-top">
+                        <div class="file-icon-box ${file.icon.split(' ')[1]}"><i class="fa-solid ${file.icon.split(' ')[0]}"></i></div>
+                        <div class="file-info">
+                            <h4>${file.title}</h4>
+                            <div class="file-meta">
+                                <span><i class="fa-regular fa-hdd"></i> ${file.fileSize}</span>
+                                <span><i class="fa-regular fa-calendar"></i> ${file.dateAdded}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="download-progress-container" id="prog-box-${file.id}">
+                        <div class="progress-text-wrapper"><span>Downloading...</span><strong id="prog-pct-${file.id}">0%</strong></div>
+                        <div class="dl-progress-bar"><div class="dl-progress-fill" id="prog-fill-${file.id}"></div></div>
+                    </div>
+                    <div class="dl-action-area">
+                        <span class="tag-label tag-${file.category}">${file.category}</span>
+                        <button class="btn-download" id="btn-dl-${file.id}" onclick="triggerSimulatedDownload(${file.id})">
+                            <i class="fa-solid fa-arrow-down"></i> Download
+                        </button>
+                    </div>
+                </div>`;
+        });
+    }
+
+    // Render Section B
+    function renderPrevious(items) {
+        const space = document.getElementById('previousGridSpace');
+        space.innerHTML = '';
+        if(items.length === 0) {
+            space.innerHTML = `<div style="grid-column:1/-1; color:#999; font-size:13px; text-align:center; padding:15px;">No record logs found for previous items.</div>`;
+            return;
+        }
+        items.forEach(file => {
+            space.innerHTML += `
+                <div class="dl-card">
+                    <div class="dl-top">
+                        <div class="file-icon-box ${file.icon ? file.icon.split(' ')[1] : 'pdf-bg'}"><i class="fa-solid ${file.icon ? file.icon.split(' ')[0] : 'fa-file-pdf'}"></i></div>
+                        <div class="file-info">
+                            <h4>${file.title}</h4>
+                            <div class="file-meta">
+                                <span><i class="fa-regular fa-hdd"></i> ${file.fileSize}</span>
+                                <span><i class="fa-solid fa-circle-check" style="color:#17b05c;"></i> Saved Locally</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dl-action-area">
+                        <span class="tag-label tag-${file.category}">${file.category}</span>
+                        <button class="btn-download btn-re-download" onclick="alert('Opening saved document stream setup...')">
+                            <i class="fa-solid fa-folder-open"></i> Open File
+                        </button>
+                    </div>
+                </div>`;
+        });
+    }
+
+    // Render Section C (Table Logs)
+    function renderHistoryLogs() {
+        const tbody = document.getElementById('historyTableBody');
+        tbody.innerHTML = '';
+        if(downloadHistoryLogs.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#999; padding:20px;">No download history records recorded.</td></tr>`;
+            return;
+        }
+        downloadHistoryLogs.forEach(log => {
+            tbody.innerHTML += `
+                <tr>
+                    <td><code>${log.id}</code></td>
+                    <td><strong>${log.title}</strong></td>
+                    <td><span class="tag-label tag-${log.category}">${log.category}</span></td>
+                    <td>${log.size}</td>
+                    <td>${log.time}</td>
+                    <td><span class="status-indicator text-success"><i class="fa-solid fa-circle-check"></i> Success</span></td>
+                </tr>`;
+        });
+    }
+
+    // Interactive Core Download Simulator Engine
+    function triggerSimulatedDownload(id) {
+        const targetFile = availableResources.find(f => f.id === id);
+        if(!targetFile) return;
+
+        const btn = document.getElementById(`btn-dl-${id}`);
+        const progBox = document.getElementById(`prog-box-${id}`);
+        const fill = document.getElementById(`prog-fill-${id}`);
+        const pctText = document.getElementById(`prog-pct-${id}`);
+
+        btn.disabled = true;
+        btn.style.opacity = '0.5';
+        progBox.style.display = 'block';
+
+        let progressValue = 0;
+        const speedTimer = setInterval(() => {
+            progressValue += Math.floor(Math.random() * 15) + 5;
+            if(progressValue >= 100) {
+                progressValue = 100;
+                clearInterval(speedTimer);
+
+                pctText.innerText = "100%";
+                fill.style.width = "100%";
+
+                setTimeout(() => {
+                    // Update Model Repositories Arrays
+                    availableResources = availableResources.filter(f => f.id !== id);
+                    
+                    previousDownloads.unshift({
+                        id: Date.now(),
+                        title: targetFile.title,
+                        category: targetFile.category,
+                        fileSize: targetFile.fileSize,
+                        icon: targetFile.icon
+                    });
+
+                    // Timestamp Generator
+                    const rightNow = new Date();
+                    const formattedTime = rightNow.toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' }) + `, ` + rightNow.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+                    downloadHistoryLogs.unshift({
+                        id: "DLID-" + Math.floor(1000 + Math.random() * 9000),
+                        title: targetFile.title,
+                        category: targetFile.category,
+                        size: targetFile.fileSize,
+                        time: formattedTime
+                    });
+
+                    // Synchronize Interface elements redraw
+                    populateUIGrids();
+                }, 400);
+            } else {
+                pctText.innerText = progressValue + "%";
+                fill.style.width = progressValue + "%";
+            }
+        }, 100);
+    }
+
+    // Category Tabs Filter logic
+    function filterData(category, element) {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        element.classList.add('active');
+        currentCategoryFilter = category;
+        populateUIGrids();
+    }
+
+    // Action Triggers for Clearing Dashboard History
+    function clearHistoryLogs() {
+        if(confirm("Are you sure you want to flush all log activities?")) {
+            downloadHistoryLogs = [];
+            renderHistoryLogs();
+        }
+    }
+
+    // Topbar Dynamic Query Filter
+    function searchAllDownloads() {
+        const val = document.getElementById('dlSearchInput').value.toLowerCase();
+        
+        // Reset navigation tab controls state back to general focus
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelector('.tab-btn[onclick*="all"]').classList.add('active');
+        currentCategoryFilter = 'all';
+
+        const matchAvailable = availableResources.filter(f => f.title.toLowerCase().includes(val) || f.category.toLowerCase().includes(val));
+        const matchPrevious = previousDownloads.filter(f => f.title.toLowerCase().includes(val) || f.category.toLowerCase().includes(val));
+        
+        renderAvailable(matchAvailable);
+        renderPrevious(matchPrevious);
+        
+        // Dynamically Filter Table rows directly
+        const rows = document.querySelectorAll('#historyTableBody tr');
+        rows.forEach(row => {
+            if(row.innerText.toLowerCase().includes(val)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+
+    // Document Ready Event Handler Initializer
+    window.addEventListener('DOMContentLoaded', () => {
+        populateUIGrids();
+    });
+</script>
+
+</body>
+</html>
