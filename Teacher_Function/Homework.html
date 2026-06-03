@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Homework Management Dashboard</title>
+  <style>
+    :root {
+      --primary: #7b68ee;
+      --light-bg: #f9f9f9;
+      --card-bg: #fff;
+      --text-color: #333;
+      --border-color: #ddd;
+      --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      background-color: var(--light-bg);
+      margin: 0;
+      padding: 0;
+      color: var(--text-color);
+    }
+
+    /* Sidebar */
+
+    .sidebar{
+    width:270px;
+    background:linear-gradient(180deg,#22006d,#16004c);
+    padding:25px 20px;
+    color:#fff;
+    position:fixed;
+    top:0;
+    left:0;
+    height:100%;
+    overflow-y:auto;
+    z-index:999;
+    transition:.4s;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin-bottom:45px;
+}
+
+.logo-box{
+    width:55px;
+    height:55px;
+    border-radius:18px;
+    background:rgba(255,255,255,0.1);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:26px;
+}
+
+.logo h2{
+    font-size:32px;
+}
+
+.logo p{
+    font-size:13px;
+    opacity:.8;
+}
+
+.menu{
+    list-style:none;
+}
+
+.menu li{
+    margin-bottom:15px;
+}
+
+.menu a{
+    text-decoration:none;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    gap:15px;
+    padding:16px 18px;
+    border-radius:16px;
+    transition:.3s;
+    font-size:16px;
+}
+
+.menu a:hover,
+.menu .active{
+    background:linear-gradient(90deg,#7b2ff7,#5f2eff);
+}
+
+    .container {
+      max-width: 1200px;
+      margin: 30px 30px 30px 300px;
+      padding: 20px;
+      background: var(--card-bg);
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+    }
+
+    h2 {
+      text-align: center;
+      color: var(--primary);
+      margin-bottom: 25px;
+    }
+
+    /* Upload Area */
+    .upload-area {
+      border: 2px dashed var(--border-color);
+      border-radius: 10px;
+      padding: 40px;
+      text-align: center;
+      background-color: #fafafa;
+      cursor: pointer;
+      transition: border-color 0.3s ease, background-color 0.3s ease;
+    }
+
+    .upload-area.dragover {
+      border-color: var(--primary);
+      background-color: #f0f0ff;
+    }
+
+    .upload-area input {
+      display: none;
+    }
+
+    .upload-area p {
+      margin: 10px 0;
+      font-size: 15px;
+    }
+
+    .upload-area button {
+      background-color: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .upload-area button:hover {
+      background-color: #5a4edc;
+    }
+
+    /* Summary Cards */
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 30px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+
+    .card h3 {
+      margin: 0;
+      color: var(--primary);
+      font-size: 18px;
+    }
+
+    .card p {
+      font-size: 22px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    /* Homework Table */
+    .table-container {
+      margin-top: 30px;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card-bg);
+    }
+
+    th, td {
+      padding: 12px 15px;
+      border-bottom: 1px solid var(--border-color);
+      text-align: left;
+    }
+
+    th {
+      background-color: #f3f3f3;
+      color: #555;
+    }
+
+    tr:hover {
+      background-color: #f9f9ff;
+    }
+
+    .status {
+      font-weight: bold;
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+
+    .pending {
+      background-color: #fff3cd;
+      color: #856404;
+    }
+
+    .submitted {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    .late {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+      }
+      .container {
+        margin: 20px 15px 30px;
+      }
+      .upload-area {
+        padding: 25px;
+      }
+      th, td {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <aside class="sidebar" id="sidebar">
+
+<div class="logo">
+    <div class="logo-box">📘</div>
+
+    <div>
+        <h2>EduSphere</h2>
+        <p>School Management System</p>
+    </div>
+</div>
+
+<ul class="menu">
+    <li><a href="Teacher_DashBoard.html">🏠 Dashboard</a></li>
+    <li><a href="Students.html">👨‍🎓 Students</a></li>
+    <li><a href="Attendance.html">✔ Attendance</a></li>
+    <li><a href="Exams.html" class="active">📝 Exams</a></li>
+    <li><a href="Homework.html">📚 Homework</a></li>
+    <li><a href="Online_Classes.html">💻 Online Classes</a></li>
+    <li><a href="Reports.html">📄 Reports</a></li>
+    <li><a href="Messages.html">💬 Messages</a></li>
+    <li><a href="Settings.html">⚙ Settings</a></li>
+</ul>
+
+</aside>
+  <div class="container">
+    <h2>Homework Management</h2>
+
+    <div class="upload-area" id="uploadArea">
+      <p>📤 Drag & drop homework file here</p>
+      <p>or</p>
+      <button id="browseBtn">Browse Files</button>
+      <input type="file" id="fileInput" multiple accept=".pdf,.doc,.docx,.ppt,.zip" />
+      <p>Supported formats: PDF, DOC, DOCX, PPT, ZIP (Max 20MB)</p>
+    </div>
+
+    <div class="summary">
+      <div class="card">
+        <h3>Pending</h3>
+        <p id="pendingCount">12</p>
+      </div>
+      <div class="card">
+        <h3>Submitted</h3>
+        <p id="submittedCount">28</p>
+      </div>
+      <div class="card">
+        <h3>Late</h3>
+        <p id="lateCount">5</p>
+      </div>
+      <div class="card">
+        <h3>Total</h3>
+        <p id="totalCount">45</p>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Grade</th>
+            <th>Due Date</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="homeworkTable">
+          <tr>
+            <td>Algebra Worksheet</td>
+            <td>Grade 10A</td>
+            <td>May 25, 2026</td>
+            <td><span class="status pending">Pending</span></td>
+            <td><button>Review</button></td>
+          </tr>
+          <tr>
+            <td>Geometry Problems</td>
+            <td>Grade 9B</td>
+            <td>May 22, 2026</td>
+            <td><span class="status submitted">Submitted</span></td>
+            <td><button>View</button></td>
+          </tr>
+          <tr>
+            <td>History Report</td>
+            <td>Grade 8A</td>
+            <td>May 20, 2026</td>
+            <td><span class="status late">Late</span></td>
+            <td><button>Review</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const uploadArea = document.getElementById("uploadArea");
+    const fileInput = document.getElementById("fileInput");
+    const browseBtn = document.getElementById("browseBtn");
+    const homeworkTable = document.getElementById("homeworkTable");
+
+    uploadArea.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      uploadArea.classList.add("dragover");
+    });
+
+    uploadArea.addEventListener("dragleave", () => {
+      uploadArea.classList.remove("dragover");
+    });
+
+    uploadArea.addEventListener("drop", (e) => {
+      e.preventDefault();
+      uploadArea.classList.remove("dragover");
+      handleFiles(e.dataTransfer.files);
+    });
+
+    browseBtn.addEventListener("click", () => fileInput.click());
+
+    fileInput.addEventListener("change", () => {
+      handleFiles(fileInput.files);
+    });
+
+    function handleFiles(files) {
+      Array.from(files).forEach((file) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${file.name}</td>
+          <td>Grade 10A</td>
+          <td>${new Date().toLocaleDateString()}</td>
+          <td><span class="status submitted">Uploaded</span></td>
+          <td><button>View</button></td>
+        `;
+        homeworkTable.appendChild(row);
+      });
+    }
+  </script>
+</body>
+</html>
+                                  homeworkintecacherdashboard
