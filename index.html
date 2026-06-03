@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>School Management | Role based Redirection Portal</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at 10% 30%, #eef2fc, #c9d9f0);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        /* main card container */
+        .redirect-portal {
+            max-width: 1300px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(8px);
+            border-radius: 3rem;
+            padding: 2rem 2rem 3rem;
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            transition: all 0.2s;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .hero h1 {
+            font-size: 2.6rem;
+            font-weight: 800;
+            background: linear-gradient(145deg, #0B2B40, #1B4F72, #2E86AB);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .hero p {
+            font-size: 1.05rem;
+            color: #1f3b4c;
+            font-weight: 500;
+            margin-top: 0.6rem;
+            background: rgba(255, 255, 240, 0.6);
+            display: inline-block;
+            padding: 0.2rem 1.2rem;
+            border-radius: 40px;
+            backdrop-filter: blur(2px);
+        }
+
+        .role-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2.5rem 0 2rem;
+        }
+
+        .role-card {
+            background: white;
+            border-radius: 2rem;
+            width: 260px;
+            padding: 2rem 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            box-shadow: 0 15px 30px -12px rgba(0, 0, 0, 0.2);
+            border: 1px solid #ffffffaa;
+        }
+
+        .role-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 30px 40px -15px rgba(0, 0, 0, 0.3);
+            background: #ffffff;
+        }
+
+        .role-emoji {
+            font-size: 4rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .role-card h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #1e3b4f;
+        }
+
+        .role-card p {
+            color: #4f6f8a;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .badge {
+            margin-top: 1rem;
+            background: #ecf7ff;
+            display: inline-block;
+            padding: 0.2rem 1rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #1c6e8f;
+        }
+
+        /* Info panel */
+        .info-panel {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(16px);
+            border-radius: 1.8rem;
+            max-width: 580px;
+            margin: 1.5rem auto 0;
+            padding: 1.2rem 1.8rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            transition: all 0.2s;
+        }
+
+        .info-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #134b6b;
+            margin-bottom: 0.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .info-desc {
+            font-size: 0.9rem;
+            color: #2c4e6e;
+            margin-bottom: 0.8rem;
+        }
+
+        .demo-credentials {
+            background: #e9f2fa;
+            padding: 0.5rem;
+            border-radius: 1.2rem;
+            font-family: monospace;
+            font-size: 0.75rem;
+            color: #004070;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 2.2rem;
+            font-size: 0.7rem;
+            color: #2c5a74;
+            font-weight: 500;
+        }
+
+        @media (max-width: 700px) {
+            .redirect-portal {
+                padding: 1.2rem;
+            }
+
+            .role-card {
+                width: 180px;
+                padding: 1rem;
+            }
+
+            .role-emoji {
+                font-size: 2.8rem;
+            }
+
+            .role-card h3 {
+                font-size: 1.4rem;
+            }
+        }
+
+        /* loading animation */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            flex-direction: column;
+            visibility: hidden;
+            opacity: 0;
+            transition: 0.2s;
+            color: white;
+            font-weight: 600;
+        }
+
+        .loading-overlay.active {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-top: 5px solid #ffffff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="redirect-portal">
+        <div class="hero">
+            <h1>🎓 EduAccess Hub</h1>
+            <p>One portal · dedicated dashboards</p>
+        </div>
+
+        <div class="role-grid">
+            <!-- ADMIN card -->
+            <div class="role-card" data-role="admin" data-url="Admin_Functions/Admin_Login.html">
+                <div class="role-emoji">👑</div>
+                <h3>Admin</h3>
+                <p>Full system control · analytics · user management</p>
+                <div class="badge">🔐 Redirect → admin panel</div>
+            </div>
+            <!-- PARENT card -->
+            <div class="role-card" data-role="parent" data-url="Parent_Functions/Parent_Login.html">
+                <div class="role-emoji">👪</div>
+                <h3>Parent</h3>
+                <p>Track progress · fees · school announcements</p>
+                <div class="badge">🏠 Redirect → parent zone</div>
+            </div>
+            <!-- TEACHER card -->
+            <div class="role-card" data-role="teacher" data-url="Teacher_Function/Teacher_Login.html">
+                <div class="role-emoji">🍎</div>
+                <h3>Teacher</h3>
+                <p>Classes · grading · assignments & reports</p>
+                <div class="badge">📚 Redirect → staff area</div>
+            </div>
+            <!-- STUDENT card -->
+            <div class="role-card" data-role="student" data-url="Students_Functions/Student_Login.html">
+                <div class="role-emoji">🎓</div>
+                <h3>Student</h3>
+                <p>Results · timetable · homework & events</p>
+                <div class="badge">📖 Redirect → student hub</div>
+            </div>
+        </div>
+
+        <!-- info panel: demo & redirect notice -->
+        <!-- <div class="info-panel">
+            <div class="info-title">
+                ⚡ Instant role-based redirection
+            </div>
+            <div class="info-desc">
+                Click on any role card to automatically redirect to the dedicated page for that role.<br>
+                <strong>🔁 Seamless navigation · smart routing</strong>
+            </div>
+            <div class="demo-credentials">
+                💡 DEMO MODE: Each card will redirect to a mock dashboard page (admin.html , parent.html etc.) <br>
+                ✨ You can replace the target URLs in the script or HTML attributes with your real pages.
+            </div>
+        </div> -->
+        <footer>
+            🏛️ School Management System | Role-based redirect architecture
+        </footer>
+    </div>
+
+    <!-- Loading overlay for smooth transition -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="spinner"></div>
+        <div id="loadingText">Redirecting to dashboard...</div>
+    </div>
+
+    <script>
+        // ========================
+        // PURE REDIRECTION PAGE - ADMIN, PARENT, TEACHER, STUDENT
+        // Click on any role -> redirect to respective dashboard URL
+        // ========================
+
+        (function () {
+            // Get all role cards
+            const roleCards = document.querySelectorAll('.role-card');
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            const loadingTextSpan = document.getElementById('loadingText');
+
+            // You can customize the target URLs for each role (dynamic or via data attribute)
+            // The cards already have data-url attributes, but we also provide a mapping fallback
+            const defaultUrls = {
+                admin: 'admin-dashboard.html',
+                parent: 'parent-portal.html',
+                teacher: 'teacher-dashboard.html',
+                student: 'student-dashboard.html'
+            };
+
+            // Show loading with custom message
+            function showLoading(roleName) {
+                if (loadingOverlay) {
+                    loadingTextSpan.innerText = `🔄 Redirecting to ${roleName} dashboard ...`;
+                    loadingOverlay.classList.add('active');
+                }
+            }
+
+            function hideLoading() {
+                if (loadingOverlay) {
+                    loadingOverlay.classList.remove('active');
+                }
+            }
+
+            // Perform actual redirection
+            function redirectToRole(role, targetUrl) {
+                if (!targetUrl) {
+                    console.warn(`No URL defined for role: ${role}, using fallback`);
+                    // fallback mapping
+                    if (role === 'admin') targetUrl = 'admin-dashboard.html';
+                    else if (role === 'parent') targetUrl = 'parent-portal.html';
+                    else if (role === 'teacher') targetUrl = 'teacher-dashboard.html';
+                    else if (role === 'student') targetUrl = 'student-dashboard.html';
+                    else targetUrl = 'index.html';
+                }
+
+                // small animation delay for better UX (optional)
+                showLoading(role.charAt(0).toUpperCase() + role.slice(1));
+
+                // slight timeout to show loading and make redirect smooth
+                setTimeout(() => {
+                    // Redirect to the desired page
+                    window.location.href = targetUrl;
+                    // Fallback: if redirect fails after 2 sec, hide loading (rare)
+                    setTimeout(() => {
+                        hideLoading();
+                    }, 2000);
+                }, 400);
+            }
+
+            // Add click event to each role card
+            roleCards.forEach(card => {
+                card.addEventListener('click', (event) => {
+                    // Prevent any accidental parent propagation
+                    event.stopPropagation();
+
+                    // Retrieve role and data-url from the card
+                    const role = card.getAttribute('data-role');
+                    let targetUrl = card.getAttribute('data-url');
+
+                    if (!role) {
+                        console.error('Role attribute missing');
+                        return;
+                    }
+
+                    // If data-url is not explicitly set, use default mapping
+                    if (!targetUrl) {
+                        targetUrl = defaultUrls[role];
+                    }
+
+                    // additional safety: if still undefined
+                    if (!targetUrl) {
+                        console.error(`No URL defined for role ${role}`);
+                        alert(`⚠️ Redirection URL not configured for ${role}. Please check data-url attribute.`);
+                        return;
+                    }
+
+                    // Optional: You could also store last selected role in session/localStorage if needed
+                    sessionStorage.setItem('lastSelectedRole', role);
+                    sessionStorage.setItem('lastRedirectTime', Date.now());
+
+                    // Perform redirection
+                    redirectToRole(role, targetUrl);
+                });
+            });
+
+            // Bonus: Provide a global function to dynamically change any card's target URL
+            // Expose to window if needed for further customization
+            window.updateRoleUrl = function (role, newUrl) {
+                const targetCard = document.querySelector(`.role-card[data-role="${role}"]`);
+                if (targetCard) {
+                    targetCard.setAttribute('data-url', newUrl);
+                    console.log(`✅ URL for ${role} updated to ${newUrl}`);
+                } else {
+                    console.warn(`Card with role ${role} not found`);
+                }
+            };
+
+            // Optional: for development, log the current environment and simulate that real pages might not exist yet,
+            // but we still redirect. In case of missing html, browser will show 404, but this is expected for demo.
+            // You can replace with actual endpoints later.
+
+            // Also add a small ripple/feedback effect (accessibility)
+            const style = document.createElement('style');
+            style.textContent = `
+            .role-card:active {
+                transform: scale(0.96);
+                transition: transform 0.08s;
+            }
+        `;
+            document.head.appendChild(style);
+
+            // If you want to prevent accidental double clicks while loading
+            let isRedirecting = false;
+            const originalRedirect = redirectToRole;
+            window.redirectToRole = function (role, url) {
+                if (isRedirecting) return;
+                isRedirecting = true;
+                originalRedirect(role, url);
+                setTimeout(() => { isRedirecting = false; }, 1000);
+            };
+            redirectToRole = window.redirectToRole;
+
+            // Rebind card events to use the guarded redirect
+            // To avoid duplicate events, we'll replace listeners with new guarded version
+            const freshCards = document.querySelectorAll('.role-card');
+            freshCards.forEach(card => {
+                // remove existing listeners by cloning and replacing? but simpler: we override addEventListener 
+                // but there might be multiple. We'll clean by removing all listeners? (better to replace)
+                const newCard = card.cloneNode(true);
+                card.parentNode.replaceChild(newCard, card);
+                newCard.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const roleAttr = newCard.getAttribute('data-role');
+                    let urlAttr = newCard.getAttribute('data-url');
+                    if (!roleAttr) return;
+                    if (!urlAttr) {
+                        if (roleAttr === 'admin') urlAttr = 'admin-dashboard.html';
+                        else if (roleAttr === 'parent') urlAttr = 'parent-portal.html';
+                        else if (roleAttr === 'teacher') urlAttr = 'teacher-dashboard.html';
+                        else if (roleAttr === 'student') urlAttr = 'student-dashboard.html';
+                    }
+                    if (window.redirectToRole && typeof window.redirectToRole === 'function') {
+                        window.redirectToRole(roleAttr, urlAttr);
+                    } else {
+                        window.location.href = urlAttr;
+                    }
+                });
+            });
+
+            // Re-attach loading overlay reference after dom changes
+            const newOverlay = document.getElementById('loadingOverlay');
+            if (newOverlay) window.loadingLayer = newOverlay;
+
+            console.log("✅ School redirect portal ready: Admin, Parent, Teacher, Student cards will redirect to respective pages instantly.");
+        })();
+    </script>
+
+    <!-- 
+    =======================================================
+    💡 IMPORTANT: This page instantly redirects when you click on any role.
+    For demonstration, it will try to open:
+        - admin-dashboard.html
+        - parent-portal.html
+        - teacher-dashboard.html
+        - student-dashboard.html
+    
+    ✨ To make it fully functional, create those 4 HTML files in the same folder.
+    OR you can replace the target URLs (data-url attribute in each .role-card) 
+    with actual links like "/admin/home", "/parent/profile" etc.
+    
+    🚀 FEATURES:
+    - Clean UI with role based cards.
+    - Loading spinner while redirecting.
+    - Session storage saves last selected role (optional).
+    - Easy to customize URLs using updateRoleUrl function.
+    - Mobile responsive + modern glassmorphism design.
+    =======================================================
+-->
+
+    <!-- 
+    For testing without actual pages, you could change URLs to 
+    "https://example.com" but it's better to create dummy pages.
+    However, this code is fully independent redirect engine.
+-->
+
+</body>
+
+</html>
